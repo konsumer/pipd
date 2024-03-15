@@ -4,13 +4,14 @@ from PIL import Image, ImageSequence
 from oled import runloop, framerate_regulator
 from pathlib import Path
 
-def draw(screen, device):
+def draw(screen, device, draw):
     for frame in ImageSequence.Iterator(splash):
             with regulator:
                 screen.paste(frame, (0, 16))
+                draw.text((0, 0), "Loading...", fill=1)
                 device.display(screen)
 
-regulator = framerate_regulator(fps=10)
+regulator = framerate_regulator(fps=20)
 splash = Image.open(Path(__file__).resolve().parent.joinpath('splash.gif'))
 for frame in ImageSequence.Iterator(splash):
     frame.resize((128, 48), resample=Image.LANCZOS)

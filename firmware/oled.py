@@ -1,20 +1,16 @@
 import sys
 from luma.core import cmdline, error
 from luma.core.sprite_system import framerate_regulator
-from PIL import Image
+from PIL import Image, ImageDraw
 
 def runloop(callback):
     device = get_device()
-    screen = Image.new("1", device.size, "black")
+    screen = Image.new("1", device.size)
+    draw = ImageDraw.Draw(screen)
     while True:
-        callback(screen, device)
+        callback(screen, device, draw)
 
 def display_settings(device, args):
-    """
-    Display a short summary of the settings.
-
-    :rtype: str
-    """
     iface = ''
     display_types = cmdline.get_display_types()
     if args.display not in display_types['emulator']:
@@ -33,9 +29,6 @@ def display_settings(device, args):
 
 
 def get_device(actual_args=None):
-    """
-    Create device from command-line arguments and return it.
-    """
     if actual_args is None:
         actual_args = sys.argv[1:]
     parser = cmdline.create_parser(description='luma.examples arguments')
