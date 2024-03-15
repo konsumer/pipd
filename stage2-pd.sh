@@ -19,7 +19,7 @@ After=audio.target
 Type=simple
 User=root
 Group=root
-ExecStart=/usr/bin/puredata -nogui -rt
+ExecStart=/usr/bin/puredata -nogui -rt /home/pi/pd/MAIN.pd
 
 [Install]
 WantedBy=audio.target
