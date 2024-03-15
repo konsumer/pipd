@@ -35,7 +35,7 @@ Originally, I had this plan to make a whole distro and generate a clean disk-ima
 
 ### usage
 
-- The idea is that you work on puredata patches on your desktop computer, and put them in `~/pd/`, which is accesible with MTP. When you connect to the hardware from the puredata patch, the patch on the device will be disabled. When a change in the file is detected on device, puredata will restart.
+- The idea is that you work on puredata patches on your desktop computer, and put them in `~/pd/`, which is accesible with MTP. When you connect to the hardware from the puredata patch, the patch on the device will be disabled until next run. When a change in the file is detected on device, puredata will restart.
 - open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pd/` (over MTP)
 
 
