@@ -15,7 +15,7 @@ DefaultDependencies=false
 Type=simple
 User=root
 Group=root
-ExecStart=/home/pi/firmware/firmware.py
+ExecStart=/home/pi/pipd/firmware/firmware.py
 
 [Install]
 WantedBy=sysinit.target

@@ -6,7 +6,7 @@ set -e
 
 ssh-copy-id pi@192.168.11.1
 
-ssh pi@192.168.11.1 "sudo apt install -y puredata"
+ssh pi@192.168.11.1 "sudo apt install -y puredata pd-maxlib"
 
 scp -r pd pi@192.168.11.1:
 
@@ -19,7 +19,7 @@ After=audio.target
 Type=simple
 User=root
 Group=root
-ExecStart=/usr/bin/puredata -nogui -rt /home/pi/pd/MAIN.pd
+ExecStart=/usr/bin/puredata -nogui -rt /home/pi/pipd/pd/MAIN.pd
 
 [Install]
 WantedBy=audio.target
@@ -33,7 +33,7 @@ EOF
 
 cat << EOF  | ssh pi@192.168.11.1 -T "sudo tee /etc/systemd/system/puredata-watcher.path"
 [Path]
-PathModified=/home/pi/pd/*
+PathModified=/home/pi/pipd/pd/*
 
 [Install]
 WantedBy=multi-user.target
