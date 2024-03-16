@@ -8,7 +8,9 @@ ssh-copy-id pi@192.168.11.1
 
 ssh pi@192.168.11.1 "sudo apt install -y puredata pd-maxlib"
 
-scp -r pd pi@192.168.11.1:
+ssh pi@192.168.11.1 "mkdir -p pipd"
+
+scp -r pd pi@192.168.11.1:pipd/pd
 
 cat << EOF | ssh pi@192.168.11.1 -T "sudo tee /etc/systemd/system/puredata.service"
 [Unit]
