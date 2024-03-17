@@ -25,6 +25,8 @@ def draw_splash(screen, device, draw):
 # TODO: watch files for change (restart pd, if host computer is not connected)
 
 regulator = framerate_regulator(fps=5)
+
+# TODO: speed this up with pre-calc?
 splash = Image.open(Path(__file__).resolve().parent.joinpath('splash.gif'))
 for frame in ImageSequence.Iterator(splash):
   frame.resize((128, 48), resample=Image.LANCZOS)
