@@ -18,7 +18,7 @@ def draw_splash(screen, device, draw):
       screen.paste(frame, (0, 16))
       draw.text((0, 0), "Loading...", fill=1)
       device.display(screen)
-      # TODO: check if puredata is ready
+      # TODO: check if puredata is ready, return False
   return True
 
 # TODO: run puredata and wait for it (via websocket)
@@ -31,3 +31,4 @@ for frame in ImageSequence.Iterator(splash):
 
 print("starting puredata interface")
 
+run_loop(draw_splash)
