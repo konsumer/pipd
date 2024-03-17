@@ -23,6 +23,7 @@ def draw_splash(screen, device, draw):
 
 # TODO: run puredata and wait for it (via websocket)
 # TODO: watch files for change (restart pd, if host computer is not connected)
+# TODO: use libpd in python? might make communicating with it much easier
 
 regulator = framerate_regulator(fps=5)
 

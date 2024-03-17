@@ -39,6 +39,7 @@ mount --bind /sys work/sys/
 mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
+# setup a service that starts firmware
 cat << EOF > work/etc/systemd/system/pipd.service
 [Unit]
 Description=PiPd Firmware Service
@@ -54,6 +55,7 @@ ExecStart=/home/pi/pipd/firmware/firmware.py
 WantedBy=sysinit.target
 EOF
 
+# install software needed for firmware and setup
 cat << EOF > work/stage1.sh
 #!/bin/sh
 
@@ -77,6 +79,7 @@ sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
 touch work/boot/ssh
 chmod 755 work/stage1.sh
 
+# setup i2c & i2s audio & gadget-mode
 cat << EOF > work/boot/config.txt
 dtparam=i2c_arm=on,i2c_arm_baudrate=1000000
 dtparam=i2s=on
@@ -88,10 +91,12 @@ arm_boost=1
 dtoverlay=dwc2
 EOF
 
+# login pi/pi
 cat << EOF > work/boot/userconf.txt
 pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0
 EOF
 
+# dhcp server for gadget
 cat << EOF > work/etc/dhcp/dhcpd.conf
 authoritative;
 
@@ -101,6 +106,7 @@ subnet 192.168.11.0 netmask 255.255.255.0 {
 }
 EOF
 
+# basic networking for gadget
 cat << EOF > work/etc/network/interfaces.d/gadget
 allow-hotplug usb0
 iface usb0 inet static
