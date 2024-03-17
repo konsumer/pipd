@@ -28,18 +28,15 @@ I hooked it up like this:
 
 Originally, I had this plan to make a whole distro and generate a clean disk-image, since you have to be very careful about not setting up things like ssh keys. It's a lot more work than just modifying a disk-image in-place to have the basic stuff that is needed, so I just did that.
 
-- Run `sudo ./stage1.sh` to build a basic pi image that you can use MTP for files, and ssh into with pi/pi over gadget-mode network: `ssh pi@192.168.7.1`. It will generate pipd.img which will make it ready for other stages. This stage requires a debian-based OS on host, so use an emulator, if you need to.
-- once it's setup `ssh pi@192.168.7.1` and configure wifi with `sudo raspi-config`. I also like to setup locale & keyboard. After you run the other stages, you can disable wifi, if you want.
-- `./stage2-pd.sh` will setup basic vanilla puredata that runs a patch at startup and watch for changes. It requires you to plug the device in. You need `ssh/scp` command in your path, so use linux/mac/wsl.
-- `./stage3-ui.sh` is specific to my hardware setup, but will start a service that draws a splash-screen and connect the UI to your puredata patch. It requires you to plug the device in. You need `ssh/scp` command in your path, so use linux/mac/wsl.
+```
+sudo ./setup.sh
+```
+
+Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi. It will have a gadget-mode network interface, and run `~/pipd/firmware/firmware.py` on boot.
 
 ### usage
 
-- The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`, which is accesible with MTP. When you connect to the hardware from the puredata patch, the patch on the device will be disabled until next run. When a change in the file is detected on device, puredata will restart.
-- open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/` (over MTP)
+- The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
+- open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
 
-
-## TODO
-
-- generate native static C splash-program, and run it immediately at boot (`sysinit.target`)
 

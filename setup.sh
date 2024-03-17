@@ -39,13 +39,29 @@ mount --bind /sys work/sys/
 mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
+cat << EOF > work/etc/systemd/system/pipd.service
+[Unit]
+Description=PiPd Firmware Service
+DefaultDependencies=false
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/home/pi/pipd/firmware/firmware.py
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
 cat << EOF > work/stage1.sh
 #!/bin/sh
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y isc-dhcp-server
-
+apt-get install -y isc-dhcp-server puredata libfreetype6-dev liblcms2-dev libopenjp2-7 libtiff6 python3-pip python3-numpy python3-pil libjpeg-dev zlib1g-dev python3-av
+pip3 install --break-system-packages --upgrade luma.oled
+sudo systemctl enable pipd.service
 EOF
 
 chmod 755 work/stage1.sh
@@ -90,6 +106,10 @@ iface usb0 inet static
 EOF
 
 chown root.root work/etc/dhcp/dhcpd.conf work/etc/network/interfaces.d/gadget
+
+mkdir -p work/home/pi/pipd
+cp -R pd work/home/pi/pipd/pd
+cp -R firmware work/home/pi/pipd/firmware
 
 umount work/dev/pts
 umount work/proc/
