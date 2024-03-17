@@ -63,7 +63,7 @@ cat << EOF > work/stage1.sh
 apt-get update
 apt-get upgrade -y
 apt-get install -y git i2c-tools isc-dhcp-server puredata libfreetype6-dev liblcms2-dev libopenjp2-7 libtiff6 python3-pip python3-numpy python3-pil libjpeg-dev zlib1g-dev python3-av
-pip3 install --break-system-packages --upgrade luma.oled
+pip3 install --break-system-packages --upgrade luma.oled websocket
 systemctl enable pipd.service
 
 mkdir -p /home/pi

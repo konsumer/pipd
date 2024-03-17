@@ -3,6 +3,13 @@
 from PIL import Image, ImageSequence, ImageDraw
 from pipd import get_device, framerate_regulator
 from pathlib import Path
+import subprocess
+from websocket import create_connection
+
+# TODO: watch files for change (restart pd, if host computer is not connected)
+# TODO: use libpd in python? might make communicating with it much easier
+
+pd=subprocess.Popen(["puredata", "-nogui", Path(__file__).resolve().parent.joinpath('pd', 'MAIN.pd')])
 
 def draw_splash(screen, device, draw):
   for frame in ImageSequence.Iterator(splash):
@@ -12,10 +19,6 @@ def draw_splash(screen, device, draw):
       device.display(screen)
       # TODO: check if puredata is ready, return False
   return True
-
-# TODO: run puredata and wait for it (via websocket)
-# TODO: watch files for change (restart pd, if host computer is not connected)
-# TODO: use libpd in python? might make communicating with it much easier
 
 regulator = framerate_regulator(fps=5)
 
