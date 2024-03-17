@@ -34,6 +34,12 @@ sudo ./setup.sh
 
 Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi. It will have a gadget-mode network interface, and run `~/pipd/firmware/firmware.py` on boot.
 
+After it has booted run this to setup sound:
+
+```
+wget -O - mic.raspiaudio.com | bash
+```
+
 ### usage
 
 - The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
