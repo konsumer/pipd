@@ -1,16 +1,8 @@
 #!/usr/bin/env python3
 
 from PIL import Image, ImageSequence
-from pipd import get_device, framerate_regulator, is_open
+from pipd import get_device, framerate_regulator
 from pathlib import Path
-
-def run_loop(callback):
-  device = get_device()
-  screen = Image.new("1", device.size)
-  draw = ImageDraw.Draw(screen)
-  g = True
-  while g:
-    g = callback(screen, device, draw)
 
 def draw_splash(screen, device, draw):
   for frame in ImageSequence.Iterator(splash):
@@ -34,4 +26,11 @@ for frame in ImageSequence.Iterator(splash):
 
 print("starting puredata interface")
 
-run_loop(draw_splash)
+device = get_device()
+screen = Image.new("1", device.size)
+draw = ImageDraw.Draw(screen)
+
+# show splash
+g = True
+while g:
+    g = draw_splash(screen, device, draw)

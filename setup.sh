@@ -56,6 +56,7 @@ WantedBy=sysinit.target
 EOF
 
 # install software needed for firmware and setup
+# TODO: should I do this as a runonce on boot, instead?
 cat << EOF > work/stage1.sh
 #!/bin/sh
 
