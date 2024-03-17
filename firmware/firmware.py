@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from PIL import Image, ImageSequence
+from PIL import Image, ImageSequence, ImageDraw
 from pipd import get_device, framerate_regulator
 from pathlib import Path
 
