@@ -5,23 +5,6 @@ from PIL import Image, ImageDraw
 import socket
 from threading import Thread
 
-def is_open(ip,port):
- s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
- try:
-  s.connect((ip, int(port)))
-  s.shutdown(2)
-  return True
- except:
-  return False
-
-def run_loop(callback):
-  device = get_device()
-  screen = Image.new("1", device.size)
-  draw = ImageDraw.Draw(screen)
-  g = True
-  while g:
-    g = callback(screen, device, draw)
-
 def display_settings(device, args):
   iface = ''
   display_types = cmdline.get_display_types()
@@ -60,37 +43,3 @@ def get_device(actual_args=None):
   except error.Error as e:
     parser.error(e)
     return None
-
-
-# this will process messages from puredata
-class PuredataServer(Thread):
-  def __init__(self, host='localhost', port=13001):
-    Thread.__init__(self)
-    self.running = True
-    self.device = get_device()
-    self.screen = Image.new("1", self.device.size)
-    self.draw = ImageDraw.Draw(self.screen)
-    self.server =  socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    self.server.bind((host, port))
-    # TODO: setup button & LED
-
-  def stop(self):
-    self.running = False
-
-  def run(self):
-    # TODO: check button to toggle puredata running, use LED to show status
-    while self.running:
-      m, address = self.server.recvfrom(1024)
-      args = m.decode().replace(";", "").split()
-      command = args.pop(0)
-      print(command, args)
-      if command == 'text':
-        self.draw.text((int(args[1]), int(args[2])),  " ".join(args[3:]), fill=int(args[0]))
-      if command == 'rectangle':
-        self.draw.rectangle([(int(args[1]), int(args[2])), (int(args[3]), int(args[4]))], fill=int(args[0]))
-      if command == 'image':
-        pass # TODO: work out how to cache loaded images
-      if command == 'rgb':
-        pass # TODO: work out how to chnage RGB colors
-
-      self.device.display(self.screen)
