@@ -39,22 +39,6 @@ mount --bind /sys work/sys/
 mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
-# setup a service that starts firmware
-cat << EOF > work/etc/systemd/system/pipd.service
-[Unit]
-Description=PiPd Firmware Service
-DefaultDependencies=false
-
-[Service]
-Type=simple
-User=root
-Group=root
-ExecStart=/home/pi/pipd/firmware/firmware.py
-
-[Install]
-WantedBy=sysinit.target
-EOF
-
 # install software needed for firmware and setup
 # TODO: should I do this as a runonce on boot, instead?
 cat << EOF > work/stage1.sh
@@ -62,9 +46,7 @@ cat << EOF > work/stage1.sh
 
 apt-get update
 apt-get upgrade -y
-apt-get install -y git i2c-tools isc-dhcp-server puredata libfreetype6-dev liblcms2-dev libopenjp2-7 libtiff6 python3-pip python3-numpy python3-pil libjpeg-dev zlib1g-dev python3-av
-pip3 install --break-system-packages --upgrade luma.oled websocket
-systemctl enable pipd.service
+apt-get install -y git i2c-tools isc-dhcp-server
 
 mkdir -p /home/pi
 cd /home/pi
@@ -127,5 +109,5 @@ umount work/boot
 umount work
 losetup --detach $LOOP
 
-echo "I've created pipd.img. Burn it to sd, boot it with data-port plugged into computer. You can login with pi@192.168.11.1 and run stage2/stage3."
+echo "I've created pipd.img. Burn it to sd, boot it with data-port plugged into computer. You can login with pi@192.168.11.1"
 

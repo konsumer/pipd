@@ -46,3 +46,11 @@ wget -O - mic.raspiaudio.com | bash
 - open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
 
 
+### todo
+
+I made some other tools to efficiently do stuff, but I need to finish them up:
+
+- [gifoled](../gifoled) - turn a GIF into a C program that shows an animation on the OLED
+- [pipdloader](../pipdloader) - Load a puredata-patch and interact with the hardware
+
+
