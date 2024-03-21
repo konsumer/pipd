@@ -38,6 +38,7 @@ After it has booted run this to setup sound:
 
 ```
 wget -O - mic.raspiaudio.com | bash
+wget -O - test.raspiaudio.com | bash
 ```
 
 ### operation
