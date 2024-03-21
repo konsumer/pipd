@@ -1,25 +1,19 @@
-import digitalio
-import board
+from gpiozero import LED, Button
+from time import sleep
 
-"""
-seems broke. thies works in shell:
+# LED on sound-hat
+led = LED(25)
 
-pinctrl set 25 op
-pinctrl set 25 dh
-pinctrl set 25 dl
+# yellow button on sound-hat
+button = Button(23)
 
+print("press the button to continue")
+button.wait_for_press()
 
-pinctrl set 23 ip
-pinctrl get 23
-"""
-
-# hook button to ground & GPIO4
-button = digitalio.DigitalInOut(board.D23)
-button.switch_to_input(pull=digitalio.Pull.UP)
-
-# onboard LED
-led = digitalio.DigitalInOut(board.D25)
-led.direction = digitalio.Direction.OUTPUT
+print("press button to light up LED.")
 
 while True:
-    led.value = button.value
+  if button.is_pressed:
+    led.on()
+  else:
+    led.off()
