@@ -3,7 +3,7 @@ These are experiments with each part of the hardware, so I can verify they are w
 I am using circuitpython for all of it, to keep it pretty cross-platform and easy. The same code should essentially work on a microcontroller, or any pi.
 
 - knobs.py - I got [this](https://www.adafruit.com/product/5752) which is an i2c controller with 4 rot-encoders, RGB LEDs and switches (push down on knob)
-- button.py - verify GPIO4 is working. Button is tied to ground. This is the main stomp-button
+- button.py - verify GPIO4 is working. Button is tied to ground. This is the main stomp-button. THis also tests the onboard LED.
 - oled.py - SSD1306 i2c 128x64 screen, demo-code for loading image, text, and drawing
 
 
@@ -25,3 +25,13 @@ Here is my i2c bus:
 
 - `0x3c` OLED
 - `0x49` knobs
+
+You can see htis with `i2cdetect -y 1`
+
+## setup
+
+On a fresh pi, you can setup the libs needed like this:
+
+```sh
+sudo pip install 
+```

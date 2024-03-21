@@ -40,7 +40,7 @@ After it has booted run this to setup sound:
 wget -O - mic.raspiaudio.com | bash
 ```
 
-### usage
+### operation
 
 - The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
 - open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
@@ -51,6 +51,11 @@ wget -O - mic.raspiaudio.com | bash
 I made some other tools to efficiently do stuff, but I need to finish them up:
 
 - [gif2oled](https://github.com/konsumer/gif2oled) - turn a GIF into a C program that shows an animation on the OLED
-- [pipdloader](https://github.com/konsumer/pipdloader) - Load a puredata-patch and interact with the hardware
+- [pipdloader](https://github.com/konsumer/pipdloader) - Load a puredata-patch and interact with the hardware. 
 
+I also still need to set this up:
 
+- systemd for puredata to interact with hardware (as websocket client?)
+- systemd service that shows splash with gif2oled
+- systemd service that starts puredata (or pipdloader) `shell` (in ggee, part of extended) can run commands (like stop the splasher service)
+- html emulator (for working on desktop without hardware)
