@@ -60,7 +60,6 @@ rm work/stage1.sh
 
 sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
 touch work/boot/ssh
-chmod 755 work/stage1.sh
 
 # setup i2c & i2s audio & gadget-mode
 cat << EOF > work/boot/config.txt
