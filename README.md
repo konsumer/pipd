@@ -41,6 +41,14 @@ wget -O - mic.raspiaudio.com | bash
 wget -O - test.raspiaudio.com | bash
 ```
 
+### more setup
+
+This only gets you a basic gadget-networking device.
+
+
+Have a look at [pipdloader](https://github.com/konsumer/pipdloader) for a complete puredata-loading solution.
+
+
 ### operation
 
 - The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
@@ -56,7 +64,6 @@ I made some other tools to efficiently do stuff, but I need to finish them up:
 
 I also still need to set this up:
 
-- systemd for puredata to interact with hardware (as websocket client?)
 - systemd service that shows splash with gif2oled
 - systemd service that starts puredata (or pipdloader) `shell` (in ggee, part of extended) can run commands (like stop the splasher service)
 - html emulator (for working on desktop without hardware)
