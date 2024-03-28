@@ -7,7 +7,7 @@ knobs = [0, 0, 0, 0]
 buttons = [0, 0, 0, 0, 0]
 
 def hex_to_rgb(hexa):
-    return tuple(int(hexa[i:i+2], 16)  for i in (0, 2, 4))
+    return tuple(int(hexa[i:i+2], 16)  for i in (1, 3, 5))
 
 # send a knob message to pd
 def send_knob(index, value):
@@ -23,7 +23,7 @@ def send_button(index, value):
 # handle RGB commnd from pd
 def rgb_handler(addr, color):
   i = int(addr.split('/')[-1])
-  print("rgb", i, hex_to_rgb(color[1:]))
+  print("rgb", i, hex_to_rgb(color))
 
 # handle knob commnd from pd (set virtual value)
 def knob_handler(addr, value):
