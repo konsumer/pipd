@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # pip3 install python-osc
 
 from pythonosc.dispatcher import Dispatcher
