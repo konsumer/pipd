@@ -14,12 +14,10 @@ Here are the parts I used:
 - [4 knob rotary](https://www.adafruit.com/product/5752) it's i2c (so no extra GPIO is used up) and it has buttons and RGB LEDs.
 - 128x64 SSD1306 monochrome OLED. These are surplus from really old phones, easy to find, and are pretty crisp & bright. Some (like the one I used) have split colors where the top 16 pixels are yellow, and the bottom are blue. It's still 1 color, but looks like 2.
 - Since I tie up the USB-data port with gadget-mode, USB audio is not an option. I used [this](https://www.amazon.com/RASPIAUDIO-Audio-Sound-Ultra-Raspberry/dp/B09JK728MB) for better sound.
-- While developing I also used a [Qwiic MultiPort](https://www.sparkfun.com/products/18012) to make it fast to hook it all up. I have a set of i2c devices with these connectors, so I can plug them together like legos.
 
 I hooked it up like this:
 
-- I soldered 4 wires to the bottom of the audio-card "expansion port" (i2c) and connected them to a Qwiik connector, for the rotary-encoders board
-- I connected the OLED to the expansion port, on top
+Connect rotary-encoders board to "expansion port" using a Qwiik connector. Run another Qwiik connector to the OLED from that.
 
 
 ## Usage
@@ -32,7 +30,7 @@ Originally, I had this plan to make a whole distro and generate a clean disk-ima
 sudo ./setup.sh
 ```
 
-Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi. It will have a gadget-mode network interface, and run `~/pipd/firmware/firmware.py` on boot.
+Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi. It will have a gadget-mode network interface, and run `~/pipd/firmware.py` on boot.
 
 After it has booted run this to setup sound:
 
