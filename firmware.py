@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 
-# pip3 install python-osc
+# pip3 install python-osc gpiozero
 
 from pythonosc.dispatcher import Dispatcher
-from pythonosc import osc_server, udp_client 
+from pythonosc import osc_server, udp_client
+from gpiozero import LED, Button
 
 knobs = [0, 0, 0, 0]
 buttons = [0, 0, 0, 0, 0]
+
+led = LED(25)
 
 def hex_to_rgb(hexa):
     return tuple(int(hexa[i:i+2], 16)  for i in (1, 3, 5))
@@ -35,10 +38,19 @@ def knob_handler(addr, value):
 # handle led commnd from pd
 def led_handler(_addr, value):
   print("led", int(value))
+  i = int(value)
+  if i == 1:
+    led.on()
+  else:
+    led.off()
 
 # draw text on OLED
 def oled_text_handler(_addr, color, x, y, *text):
-  print(f"text ({int(color)}): {int(x)}x{int(y)}: {" ".join(text)}")
+  c = int(color)
+  x = int(x)
+  y = int(y)
+  text = " ".join(text)
+  print(f"text ({c}): {x}x{y}: {text}")
 
 # draw rectangle on OLED
 def oled_rectangle_handler(_addr, color, x, y, w, h):
