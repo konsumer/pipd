@@ -39,6 +39,38 @@ mount --bind /sys work/sys/
 mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
+# service for hardware
+cat << EOF > work/etc/systemd/system/pipd.service
+[Unit]
+Description=PiPd Firmware Service
+DefaultDependencies=false
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/home/pi/pipd/firmware/firmware.py
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
+# service for puredata
+cat << EOF > work/etc/systemd/system/puredata.service
+[Unit]
+Description=Pure Data service
+After=audio.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/puredata -nogui -rt /home/pi/pipd/pd/MAIN.pd
+
+[Install]
+WantedBy=audio.target
+EOF
+
 # install software needed for firmware and setup
 # TODO: should I do this as a runonce on boot, instead?
 cat << EOF > work/stage1.sh
@@ -51,6 +83,9 @@ apt-get install -y git i2c-tools isc-dhcp-server
 mkdir -p /home/pi
 cd /home/pi
 git clone https://github.com/konsumer/pipd.git
+
+systemctl enable pipd.service
+systemctl enable puredata.service
 
 EOF
 

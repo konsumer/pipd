@@ -41,13 +41,6 @@ wget -O - mic.raspiaudio.com | bash
 wget -O - test.raspiaudio.com | bash
 ```
 
-### more setup
-
-This only gets you a basic gadget-networking device.
-
-
-Have a look at [pipdloader](https://github.com/konsumer/pipdloader) for a complete puredata-loading solution.
-
 
 ### operation
 
@@ -55,15 +48,3 @@ Have a look at [pipdloader](https://github.com/konsumer/pipdloader) for a comple
 - open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
 
 
-### todo
-
-I made some other tools to efficiently do stuff, but I need to finish them up:
-
-- [gif2oled](https://github.com/konsumer/gif2oled) - turn a GIF into a C program that shows an animation on the OLED
-- [pipdloader](https://github.com/konsumer/pipdloader) - Load a puredata-patch and interact with the hardware. 
-
-I also still need to set this up:
-
-- systemd service that shows splash with gif2oled
-- systemd service that starts puredata (or pipdloader) `shell` (in ggee, part of extended) can run commands (like stop the splasher service)
-- html emulator (for working on desktop without hardware)
