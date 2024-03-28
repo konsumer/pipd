@@ -17,7 +17,8 @@ Here are the parts I used:
 
 I hooked it up like this:
 
-Connect rotary-encoders board to "expansion port" using a Qwiik connector. Run another Qwiik connector to the OLED from that.
+- Connect rotary-encoders board to "expansion port" (i2c) of sound-board, using a Qwiik connector.
+- Run another Qwiik connector to the OLED from rotary-board.
 
 
 ## Usage
@@ -45,4 +46,11 @@ wget -O - test.raspiaudio.com | bash
 - The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
 - open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
 
+### todo
 
+- Does [this](https://gist.github.com/gbaman/975e2db164b3ca2b51ae11e45e8fd40a) workj without DHCP?
+- get it booting faster
+- get splash-screen working on OLED
+- best file-sharing with host? Multi-gadget mode with MTP would be nice, but samba is probly ok enough. [ksmb](https://docs.kernel.org/next/filesystems/cifs/ksmbd.html) looks interesting
+- patch menu (outside of puredata?)
+- best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options
