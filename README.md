@@ -1,7 +1,7 @@
 # pipd
 
 > [!WARNING]  
-> I started working on [bellasynth](https://github.com/konsumer/) with ideas from here. I will migrate ideas over here, once that is finished.
+> I started working on (bellasynth)[https://github.com/konsumer/bellasynth] with ideas from here. I will migrate ideas over here, once that is finished.
 
 I wanted to use mostly "regular" stuff to get a pi booting fast headless and running puredata patches. My goal was to run it in ethernet gadget-mode for very fast way to interact on the computer, but also not wait for things like wifi to work (although you can still enable these, if you want.)
 
