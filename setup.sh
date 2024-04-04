@@ -11,7 +11,7 @@ fi
 
 IMG_URL="https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz"
 
-apt-get install -y qemu qemu-user-static binfmt-support xz-utils
+apt-get install -y wget xz-utils
 
 if [ ! -f pipd-source.img ];then
   wget "${IMG_URL}" -O pipd-source.img.xz
@@ -45,7 +45,7 @@ pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOI
 EOF
 
 # setup dwc2 (gadget-mode module)
-sed -i "s/quiet/quiet modules-load=dwc2/g" work/boot/cmdline.txt
+sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
 touch work/boot/ssh
 
 # setup i2c & i2s audio & gadget-mode

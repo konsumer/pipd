@@ -31,9 +31,17 @@ Originally, I had this plan to make a whole distro and generate a clean disk-ima
 sudo ./setup.sh
 ```
 
-Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi. It will have a gadget-mode network interface, and run `~/pipd/firmware.py` on boot.
+Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi.
 
-After it has booted run this to setup sound:
+After it has booted, you can ssh (`ssh pi@192.168.11.1`) and run this:
+
+```
+sudo raspi-config
+```
+
+Setup wifi/etc. Run update.
+
+Now, for sound:
 
 ```
 wget -O - mic.raspiaudio.com | bash
@@ -63,6 +71,81 @@ EOF
 sudo /home/pi/pipdloader/setup.sh
 sudo systemctl enable pipdloader.service
 sudo systemctl start pipdloader.service
+```
+
+Here is some stuff for i2c:
+
+```
+sudo apt install -y i2c-tools
+
+sudo raspi-config nonint do_i2c 0
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_serial_hw 0
+sudo raspi-config nonint do_ssh 0
+sudo raspi-config nonint do_camera 0
+sudo raspi-config nonint disable_raspi_config_at_boot 0
+```
+
+
+If you want to setup samba:
+
+```
+sudo apt install -y samba
+cat << EOF | sudo tee /etc/samba/smb.conf
+# Global parameters
+[global]
+  dns proxy = No
+  guest account = pi
+  log file = /var/log/samba/log.%m
+  map to guest = Bad Password
+  max log size = 1000
+  panic action = /usr/share/samba/panic-action %d
+  passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+  passwd program = /usr/bin/passwd %u
+  security = USER
+  server role = standalone server
+  server string = %h server (Samba, Raspberry OS)
+  workgroup = NULL
+  idmap config * : backend = tdb
+
+[pi]
+  force create mode = 0660
+  force directory mode = 0770
+  guest ok = Yes
+  guest only = Yes
+  path = /home/pi
+  read only = No
+EOF
+
+sudo systemctl enable samba
+sudo systemctl restart samba
+```
+
+If you want a more advanced gadget setup:
+
+```
+sudo sed -i "s/modules-load=dwc2,g_ether/modules-load=dwc2/g" /boot/firmware/cmdline.txt
+sudo cp gadget.sh /usr/local/bin
+chmod 755 /usr/local/bin/gadget.sh
+
+cat << EOF | sudo tee /etc/systemd/system/gadget.service
+[Unit]
+Description=Gadget
+DefaultDependencies=false
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=/usr/local/bin/gadget.sh
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
+sudo systemctl enable gadget.service
+sudo systemctl start gadget.service
+
 ```
 
 ### todo
