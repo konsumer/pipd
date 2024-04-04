@@ -7,6 +7,8 @@ I wanted to use mostly "regular" stuff to get a pi booting fast headless and run
 
 It should send a splash-screen to the OLED very quickly, and then load a few systemd services in the background to make it all run smoothly, and as "normal" as possible.
 
+It's basically a wrapper around [pipdloader](https://github.com/konsumer/pipdloader).
+
 ## Hardware
 
 Here are the parts I used:
