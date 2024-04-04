@@ -21,9 +21,7 @@ I hooked it up like this:
 - Run another Qwiik connector to the OLED from rotary-board.
 
 
-## Usage
-
-### setup
+## Setup
 
 Originally, I had this plan to make a whole distro and generate a clean disk-image, since you have to be very careful about not setting up things like ssh keys. It's a lot more work than just modifying a disk-image in-place to have the basic stuff that is needed, so I just did that.
 
