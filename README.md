@@ -42,8 +42,12 @@ Setup wifi/etc. Run update.
 Now, for sound:
 
 ```
+# if you are using raspiaudio
 wget -O - mic.raspiaudio.com | bash
 wget -O - test.raspiaudio.com | bash
+
+# if you are using pisound
+curl https://blokas.io/pisound/install-pisound.sh | sh
 ```
 
 Now, setup pipdloader:
