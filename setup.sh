@@ -39,61 +39,13 @@ mount --bind /sys work/sys/
 mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
-# service for hardware
-cat << EOF > work/etc/systemd/system/pipd.service
-[Unit]
-Description=PiPd Firmware Service
-DefaultDependencies=false
-
-[Service]
-Type=simple
-User=root
-Group=root
-ExecStart=/home/pi/pipd/firmware.py
-
-[Install]
-WantedBy=sysinit.target
+# login pi/pi
+cat << EOF > work/boot/userconf.txt
+pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0
 EOF
 
-# service for puredata
-cat << EOF > work/etc/systemd/system/puredata.service
-[Unit]
-Description=Pure Data service
-After=audio.target
-
-[Service]
-Type=simple
-User=root
-Group=root
-ExecStart=/usr/bin/puredata -nogui -rt /home/pi/pipd/pd/MAIN.pd
-
-[Install]
-WantedBy=audio.target
-EOF
-
-# install software needed for firmware and setup
-# TODO: should I do this as a runonce on boot, instead?
-cat << EOF > work/stage1.sh
-#!/bin/sh
-
-apt-get update
-apt-get upgrade -y
-apt-get install -y git i2c-tools isc-dhcp-server
-
-mkdir -p /home/pi
-cd /home/pi
-git clone https://github.com/konsumer/pipd.git
-
-systemctl enable pipd.service
-systemctl enable puredata.service
-
-EOF
-
-chmod 755 work/stage1.sh
-chroot work /stage1.sh
-rm work/stage1.sh
-
-sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
+# setup dwc2 (gadget-mode module)
+sed -i "s/quiet/quiet modules-load=dwc2/g" work/boot/cmdline.txt
 touch work/boot/ssh
 
 # setup i2c & i2s audio & gadget-mode
@@ -108,21 +60,6 @@ arm_boost=1
 dtoverlay=dwc2
 EOF
 
-# login pi/pi
-cat << EOF > work/boot/userconf.txt
-pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0
-EOF
-
-# dhcp server for gadget
-cat << EOF > work/etc/dhcp/dhcpd.conf
-authoritative;
-
-subnet 192.168.11.0 netmask 255.255.255.0 {
-  range 192.168.11.100 192.168.11.200;
-  option domain-name "pipd.pi";
-}
-EOF
-
 # basic networking for gadget
 cat << EOF > work/etc/network/interfaces.d/gadget
 allow-hotplug usb0
@@ -133,7 +70,28 @@ iface usb0 inet static
   broadcast 192.168.11.255
 EOF
 
-chown root.root work/etc/dhcp/dhcpd.conf work/etc/network/interfaces.d/gadget
+mkdir -p work/home/pi
+git clone https://github.com/konsumer/pipdloader.git work/home/pi/pipdloader
+chown 1000:1000 -R work/home/pi/pipdloader
+
+
+# service for hardware
+cat << EOF > work/etc/systemd/system/pipdloader.service
+[Unit]
+Description=PiPd Loader Service
+DefaultDependencies=false
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/home/pi/pipdloader/pipdloader.py 
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
+#TODO: setup dnsmasq?
 
 umount work/dev/pts
 umount work/proc/
