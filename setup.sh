@@ -70,27 +70,6 @@ iface usb0 inet static
   broadcast 192.168.11.255
 EOF
 
-mkdir -p work/home/pi
-git clone https://github.com/konsumer/pipdloader.git work/home/pi/pipdloader
-chown 1000:1000 -R work/home/pi/pipdloader
-
-
-# service for hardware
-cat << EOF > work/etc/systemd/system/pipdloader.service
-[Unit]
-Description=PiPd Loader Service
-DefaultDependencies=false
-
-[Service]
-Type=simple
-User=root
-Group=root
-ExecStart=/home/pi/pipdloader/pipdloader.py 
-
-[Install]
-WantedBy=sysinit.target
-EOF
-
 #TODO: setup dnsmasq?
 
 umount work/dev/pts

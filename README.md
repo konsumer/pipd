@@ -1,8 +1,5 @@
 # pipd
 
-> [!WARNING]  
-> I started working on [bellasynth](https://github.com/konsumer/bellasynth) with ideas from here. I will migrate ideas over here, once that is finished.
-
 I wanted to use mostly "regular" stuff to get a pi booting fast headless and running puredata patches. My goal was to run it in ethernet gadget-mode for very fast way to interact on the computer, but also not wait for things like wifi to work (although you can still enable these, if you want.)
 
 It should send a splash-screen to the OLED very quickly, and then load a few systemd services in the background to make it all run smoothly, and as "normal" as possible.
@@ -43,11 +40,30 @@ wget -O - mic.raspiaudio.com | bash
 wget -O - test.raspiaudio.com | bash
 ```
 
+Now, setup pipdloader:
 
-### operation
+```
+git clone https://github.com/konsumer/pipdloader.git /home/pi/pipdloader
 
-- The idea is that you work on puredata patches on your desktop computer, and put them in `~/pipd/pd/`.
-- open [MAIN.pd](pd/MAIN.pd) on your desktop computer, and it will connect to the device (plugged into USB port) edit your patch, then put it in `~/pipd/pd/`.
+cat << EOF | sudo tee /etc/systemd/system/pipd.service
+[Unit]
+Description=PiPd
+DefaultDependencies=false
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=/home/pi/pipdloader/pipdloader.py --oled --rotary 4 /home/pi/pipdloader/patches/demo.pd
+
+[Install]
+WantedBy=sysinit.target
+EOF
+
+sudo /home/pi/pipdloader/setup.sh
+sudo systemctl enable pipdloader.service
+sudo systemctl start pipdloader.service
+```
 
 ### todo
 
