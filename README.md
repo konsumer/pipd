@@ -31,13 +31,13 @@ Originally, I had this plan to make a whole distro and generate a clean disk-ima
 sudo ./setup.sh
 ```
 
-Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi.
+Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi (connect USB data port to computer.)
 
 After it has booted, you need to set your host IP to 192.168.11.2, like this:
 
 ![ipscreen](ipscreen.png)
 
-Now you can run `ssh pi@192.168.11.1` (password is `raspberry`)
+Now you can run `ssh pi@192.168.11.1` (password is `pi`)
 
 
 ```
@@ -146,7 +146,7 @@ If you want a more advanced gadget setup:
 ```
 sudo sed -i "s/modules-load=dwc2,g_ether/modules-load=dwc2/g" /boot/firmware/cmdline.txt
 sudo cp gadget.sh /usr/local/bin
-chmod 755 /usr/local/bin/gadget.sh
+sudo chmod 755 /usr/local/bin/gadget.sh
 
 cat << EOF | sudo tee /etc/systemd/system/gadget.service
 [Unit]
@@ -176,7 +176,7 @@ sudo apt-get install -y --no-install-recommends xserver-xorg xinit realvnc-vnc-s
 sudo apt-get install -y raspberrypi-ui-mod
 ```
 
-Now, enable it in `raspi-config`
+Now, enable VNC  in `raspi-config`
 
 
 ### todo
