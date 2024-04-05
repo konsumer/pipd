@@ -2,6 +2,8 @@
 
 I wanted to use mostly "regular" stuff to get a pi booting fast headless and running puredata patches. My goal was to run it in ethernet gadget-mode for very fast way to interact on the computer, but also not wait for things like wifi to work (although you can still enable these, if you want.)
 
+This will work with pizero(2w) and pi4.
+
 It should send a splash-screen to the OLED very quickly, and then load a few systemd services in the background to make it all run smoothly, and as "normal" as possible.
 
 It's basically a wrapper around [pipdloader](https://github.com/konsumer/pipdloader).
@@ -13,7 +15,7 @@ Here are the parts I used:
 - pizero2w - it has wifi & bluetooth, which I am not using. It runs faster than pizero1, is still pretty cheap, and does gadget-mode
 - [4 knob rotary](https://www.adafruit.com/product/5752) it's i2c (so no extra GPIO is used up) and it has buttons and RGB LEDs.
 - 128x64 SSD1306 monochrome OLED. These are surplus from really old phones, easy to find, and are pretty crisp & bright. Some (like the one I used) have split colors where the top 16 pixels are yellow, and the bottom are blue. It's still 1 color, but looks like 2.
-- Since I tie up the USB-data port with gadget-mode, USB audio is not an option. I used [this](https://www.amazon.com/RASPIAUDIO-Audio-Sound-Ultra-Raspberry/dp/B09JK728MB) for better sound.
+- Since I tie up the USB-data port on pizero with gadget-mode, USB audio is not an option. I used [this](https://www.amazon.com/RASPIAUDIO-Audio-Sound-Ultra-Raspberry/dp/B09JK728MB) for better sound, but you can also use something really nice like [pisound](https://blokas.io/pisound/)
 
 I hooked it up like this:
 
@@ -31,7 +33,12 @@ sudo ./setup.sh
 
 Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi.
 
-After it has booted, you can ssh (`ssh pi@192.168.11.1`) and run this:
+After it has booted, you need to set your host IP to 192.168.11.2, like this:
+
+![ipscreen](ipscreen.png)
+
+Now you can run `ssh pi@192.168.11.1` (password is `raspberry`)
+
 
 ```
 sudo raspi-config
@@ -160,6 +167,17 @@ sudo systemctl enable gadget.service
 sudo systemctl start gadget.service
 
 ```
+
+You can install Xwindows/VNC, and it does not take too much resources when you are not using it:
+
+
+```
+sudo apt-get install -y --no-install-recommends xserver-xorg xinit realvnc-vnc-server
+sudo apt-get install -y raspberrypi-ui-mod
+```
+
+Now, enable it in `raspi-config`
+
 
 ### todo
 

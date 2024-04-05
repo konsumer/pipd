@@ -40,9 +40,8 @@ mount --bind /proc work/proc/
 mount --bind /dev/pts work/dev/pts
 
 # login pi/pi
-cat << EOF > work/boot/userconf.txt
-pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0
-EOF
+echo 'pi:$6$c70VpvPsVNCG0YR5$l5vWWLsLko9Kj65gcQ8qvMkuOoRkEagI90qi3F/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0' > work/boot/userconf
+
 
 # setup dwc2 (gadget-mode module)
 sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
