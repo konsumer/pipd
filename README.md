@@ -44,7 +44,10 @@ Now you can run `ssh pi@192.168.11.1` (password is `pi`)
 sudo raspi-config
 ```
 
-Setup wifi/etc. Run update.
+- Expand FS: Advanceed/Expand Filesystem
+- Setup wifi/etc: System Options/Wireless LAN
+- Fix timezone/locale: Localisation Options 
+- Run update: Update
 
 Now, for sound:
 
@@ -78,9 +81,10 @@ WantedBy=sysinit.target
 EOF
 
 sudo /home/pi/pipdloader/setup.sh
-sudo systemctl enable pipdloader.service
-sudo systemctl start pipdloader.service
+sudo systemctl enable pipd.service
 ```
+
+Feel free to modify `/etc/systemd/system/pipd.service` to support your hardware or whatever patches you want.
 
 Here is some stuff for i2c:
 
@@ -95,10 +99,16 @@ sudo raspi-config nonint do_camera 0
 sudo raspi-config nonint disable_raspi_config_at_boot 0
 ```
 
-Here are some great plugins and stuff, but you will need to tweak /etc/systemd/system/pipd.service to add lots of `-lib` flags, to ensure they are all in path:
+Here are some great plugins and stuff:
 
 ```
 sudo apt install -y pd-cyclone pd-deken pd-purepd puredata-extra puredata-import puredata-utils pd-3dp pd-ableton-link pd-ambix pd-arraysize pd-autopreset pd-bassemu pd-beatpipe pd-boids pd-bsaylor pd-chaos pd-cmos pd-comport pd-creb pd-csound pd-cxc pd-cyclone pd-deken pd-deken-apt pd-earplug pd-ekext pd-ext13 pd-extendedview pd-fftease pd-flext-dev pd-flext-doc pd-flite pd-freeverb pd-ggee pd-gil pd-hcs pd-hexloader pd-hid pd-iem pd-iemambi pd-iemguts pd-iemlib pd-iemmatrix pd-iemnet pd-iemutils pd-jmmmp pd-jsusfx pd-kollabs pd-lib-builder pd-libdir pd-list-abs pd-log pd-lua pd-lyonpotpourri pd-mapping pd-markex pd-maxlib pd-mediasettings pd-mjlib pd-moonlib pd-motex pd-mrpeach pd-mrpeach-net pd-nusmuk pd-osc pd-pan pd-pddp pd-pdogg pd-pdp pd-pdstring pd-pduino pd-plugin pd-pmpd pd-pool pd-puremapping pd-purepd pd-purest-json pd-readanysf pd-rtclib pd-sigpack pd-slip pd-smlib pd-syslog pd-tclpd pd-testtools pd-unauthorized pd-upp pd-vbap pd-wiimote pd-windowing pd-xbee pd-xsample pd-zexy
+```
+
+You will need to tweak /etc/systemd/system/pipd.service to add lots of `-lib` flags, to ensure they are all in path. Add this to your `ExecStart` line in `/etc/systemd/system/pipd.service`:
+
+```
+ --lib /usr/lib/pd/extra/ --lib /usr/lib/pd/extra/arraysize --lib /usr/lib/pd/extra/AutoPreset --lib /usr/lib/pd/extra/bassemu~ --lib /usr/lib/pd/extra/beatpipe --lib /usr/lib/pd/extra/blokas --lib /usr/lib/pd/extra/boids --lib /usr/lib/pd/extra/bsaylor --lib /usr/lib/pd/extra/chaos --lib /usr/lib/pd/extra/cmos --lib /usr/lib/pd/extra/comport --lib /usr/lib/pd/extra/creb --lib /usr/lib/pd/extra/csound6~ --lib /usr/lib/pd/extra/cxc --lib /usr/lib/pd/extra/cyclone --lib /usr/lib/pd/extra/deken-plugin --lib /usr/lib/pd/extra/deken-xtra-apt-plugin --lib /usr/lib/pd/extra/earplug~ --lib /usr/lib/pd/extra/ekext --lib /usr/lib/pd/extra/ext13 --lib /usr/lib/pd/extra/extendedview --lib /usr/lib/pd/extra/fftease --lib /usr/lib/pd/extra/flite --lib /usr/lib/pd/extra/freeverb~ --lib /usr/lib/pd/extra/Gem --lib /usr/lib/pd/extra/gendy~ --lib /usr/lib/pd/extra/ggee --lib /usr/lib/pd/extra/gil --lib /usr/lib/pd/extra/hcs --lib /usr/lib/pd/extra/hexloader --lib /usr/lib/pd/extra/hid --lib /usr/lib/pd/extra/iem_adaptfilt --lib /usr/lib/pd/extra/iem_ambi --lib /usr/lib/pd/extra/iem_dp --lib /usr/lib/pd/extra/iemguts --lib /usr/lib/pd/extra/iemlib --lib /usr/lib/pd/extra/iemlib1 --lib /usr/lib/pd/extra/iemlib2 --lib /usr/lib/pd/extra/iemmatrix --lib /usr/lib/pd/extra/iem_mp3 --lib /usr/lib/pd/extra/iemnet --lib /usr/lib/pd/extra/iem_roomsim --lib /usr/lib/pd/extra/iem_spec2 --lib /usr/lib/pd/extra/iem_t3_lib --lib /usr/lib/pd/extra/iem_tab --lib /usr/lib/pd/extra/jmmmp --lib /usr/lib/pd/extra/jsusfx~ --lib /usr/lib/pd/extra/kollabs --lib /usr/lib/pd/extra/libdir --lib /usr/lib/pd/extra/list-abs --lib /usr/lib/pd/extra/log --lib /usr/lib/pd/extra/lyonpotpourri --lib /usr/lib/pd/extra/mapping --lib /usr/lib/pd/extra/markex --lib /usr/lib/pd/extra/maxlib --lib /usr/lib/pd/extra/mediasettings --lib /usr/lib/pd/extra/mjlib --lib /usr/lib/pd/extra/moonlib --lib /usr/lib/pd/extra/motex --lib /usr/lib/pd/extra/mrpeach --lib /usr/lib/pd/extra/net --lib /usr/lib/pd/extra/nusmuk-audio --lib /usr/lib/pd/extra/nusmuk-utils --lib /usr/lib/pd/extra/osc --lib /usr/lib/pd/extra/pan --lib /usr/lib/pd/extra/pddp --lib /usr/lib/pd/extra/pdlua --lib /usr/lib/pd/extra/pdogg --lib /usr/lib/pd/extra/pdp --lib /usr/lib/pd/extra/pdstring --lib /usr/lib/pd/extra/pduino --lib /usr/lib/pd/extra/pix_drum --lib /usr/lib/pd/extra/pix_fiducialtrack --lib /usr/lib/pd/extra/pix_hit --lib /usr/lib/pd/extra/pix_mano --lib /usr/lib/pd/extra/plugin --lib /usr/lib/pd/extra/plugin~ --lib /usr/lib/pd/extra/pmpd --lib /usr/lib/pd/extra/pool --lib /usr/lib/pd/extra/pool.pd_linux --lib /usr/lib/pd/extra/puremapping --lib /usr/lib/pd/extra/purepd --lib /usr/lib/pd/extra/purest_json --lib /usr/lib/pd/extra/readanysf~ --lib /usr/lib/pd/extra/rtc --lib /usr/lib/pd/extra/sigpack --lib /usr/lib/pd/extra/slip --lib /usr/lib/pd/extra/smlib --lib /usr/lib/pd/extra/syslog --lib /usr/lib/pd/extra/tclpd --lib /usr/lib/pd/extra/testtools --lib /usr/lib/pd/extra/unauthorized --lib /usr/lib/pd/extra/upp --lib /usr/lib/pd/extra/vbap --lib /usr/lib/pd/extra/wiimote --lib /usr/lib/pd/extra/windowing --lib /usr/lib/pd/extra/xbee --lib /usr/lib/pd/extra/xsample --lib /usr/lib/pd/extra/zexy
 ```
 
 And lots of LADSPA plugins (use with plugin~):
@@ -168,15 +178,47 @@ sudo systemctl start gadget.service
 
 ```
 
+You can make gadget easier to use (no IP setting) with dnsmasq:
+
+```
+sudo apt install -y dnsmasq
+
+cat << EOF | sudo tee /etc/dnsmasq.d/usb
+interface=usb0
+dhcp-range=192.168.11.2,192.168.11.6,255.255.255.248,1h
+dhcp-option=3
+leasefile-ro
+EOF
+```
+
 You can install Xwindows/VNC, and it does not take too much resources when you are not using it:
 
 
 ```
-sudo apt-get install -y --no-install-recommends xserver-xorg xinit realvnc-vnc-server
-sudo apt-get install -y raspberrypi-ui-mod
+sudo apt install -y x11vnc fluxbox lightdm xterm x11-server-utils
+x11vnc -storepasswd
+mkdir -p ~/.fluxbox
+
+cat << EOF >  ~/.fluxbox/startup
+xmodmap "/home/pi/.Xmodmap"
+which fbautostart > /dev/null
+if [ $? -eq 0 ]; then
+    fbautostart
+fi
+
+xset s off
+
+x11vnc -forever -usepw -display :0 -ultrafilexfer &
+
+/home/pi/pipdloader/pipdloader.py --fullscreen --rotary 8 /home/pi/pd/MAIN.pd &
+
+exec fluxbox
+EOF
 ```
 
-Now, enable VNC  in `raspi-config`
+Now, enable auto-login in `raspi-config` ("System Options"/"Boot / Auto Login"/"Desktop Auto-login")
+
+Since we are starting interface here, make sure to do `sudo systemctl disable pipd.service`
 
 
 ### todo

@@ -43,6 +43,9 @@ mount --bind /dev/pts work/dev/pts
 echo 'pi:/Y7rm8eNYZHW8CY6BOIKwMH7a3YYzZYL90zf304cAHLFaZE0' > work/boot/userconf.txt
 
 
+# don't try to get IP over USB 
+echo "denyinterfaces usb0" > work/etc/dhcpcd.conf
+
 # setup dwc2 (gadget-mode module)
 sed -i "s/quiet/quiet modules-load=dwc2,g_ether/g" work/boot/cmdline.txt
 touch work/boot/ssh
