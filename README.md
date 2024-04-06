@@ -37,7 +37,7 @@ After it has booted, you need to set your host IP to 192.168.11.2, like this:
 
 ![ipscreen](ipscreen.png)
 
-Now you can run `ssh pi@192.168.11.1` (password is `pi`)
+Now you can run `ssh pi@169.254.6.66` (password is `pi`)
 
 
 ```
@@ -91,12 +91,11 @@ Here is some stuff for i2c:
 ```
 sudo apt install -y i2c-tools
 
+# 0=true, 0=false (weirdly)
 sudo raspi-config nonint do_i2c 0
-sudo raspi-config nonint do_spi 0
-sudo raspi-config nonint do_serial_hw 0
-sudo raspi-config nonint do_ssh 0
-sudo raspi-config nonint do_camera 0
-sudo raspi-config nonint disable_raspi_config_at_boot 0
+sudo raspi-config nonint do_spi 1
+sudo raspi-config nonint do_serial_hw 1
+sudo raspi-config nonint do_camera 1
 ```
 
 Here are some great plugins and stuff:
@@ -178,24 +177,11 @@ sudo systemctl start gadget.service
 
 ```
 
-You can make gadget easier to use (no IP setting) with dnsmasq:
-
-```
-sudo apt install -y dnsmasq
-
-cat << EOF | sudo tee /etc/dnsmasq.d/usb
-interface=usb0
-dhcp-range=192.168.11.2,192.168.11.6,255.255.255.248,1h
-dhcp-option=3
-leasefile-ro
-EOF
-```
-
 You can install Xwindows/VNC, and it does not take too much resources when you are not using it:
 
 
 ```
-sudo apt install -y x11vnc fluxbox lightdm xterm x11-server-utils
+sudo apt install -y x11vnc fluxbox lightdm xterm
 x11vnc -storepasswd
 mkdir -p ~/.fluxbox
 

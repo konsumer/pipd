@@ -66,7 +66,7 @@ EOF
 cat << EOF > work/etc/network/interfaces.d/gadget
 allow-hotplug usb0
 iface usb0 inet static
-  address 192.168.11.1
+  address 169.254.6.66
   netmask 255.255.255.0
   network 192.168.11.0
   broadcast 192.168.11.255
@@ -82,5 +82,5 @@ umount work/boot
 umount work
 losetup --detach $LOOP
 
-echo "I've created pipd.img. Burn it to sd, boot it with data-port plugged into computer. You can login with pi@192.168.11.1"
+echo "I've created pipd.img. Burn it to sd, boot it with data-port plugged into computer. You can login with pi@169.254.6.66"
 
