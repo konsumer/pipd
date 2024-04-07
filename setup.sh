@@ -72,8 +72,6 @@ iface usb0 inet static
   broadcast 169.254.255.255
 EOF
 
-#TODO: setup dnsmasq?
-
 umount work/dev/pts
 umount work/proc/
 umount work/sys/
