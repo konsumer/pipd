@@ -17,7 +17,7 @@ echo 0x01 > bDeviceProtocol
 mkdir -p strings/0x409
 echo "66deadbeefdead66" > strings/0x409/serialnumber
 echo "Konsumer" > strings/0x409/manufacturer
-echo "BellaSynth" > strings/0x409/product
+echo "My Cool Device" > strings/0x409/product
 mkdir -p configs/c.1/strings/0x409
 echo "Config 1: ECM network" > configs/c.1/strings/0x409/configuration
 echo 250 > configs/c.1/MaxPower

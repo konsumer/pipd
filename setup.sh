@@ -72,6 +72,11 @@ iface usb0 inet static
   broadcast 169.254.255.255
 EOF
 
+# don't actually add the service, but put in place for later (for more advanced networking)
+mkdir -p work/usr/local/bin
+cp gadget.sh work/usr/local/bin/gadget.sh
+chmod 755 work/usr/local/bin/gadget.sh
+
 umount work/dev/pts
 umount work/proc/
 umount work/sys/
