@@ -184,13 +184,6 @@ sudo systemctl start gadget.service
 
 ```
 
-Put [gadget.sh](gadget.sh) in `/usr/local/bin/gadget.sh` from host: 
-
-```
-scp gadget.sh pi@169.254.6.66:gadget.sh
-ssh pi@169.254.6.66 sudo mv gadget.sh /usr/local/bin/
-```
-
 
 You can install Xwindows/VNC, and it does not take too much resources when you are not using it:
 
