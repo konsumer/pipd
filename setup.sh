@@ -67,9 +67,9 @@ cat << EOF > work/etc/network/interfaces.d/gadget
 allow-hotplug usb0
 iface usb0 inet static
   address 169.254.6.66
-  netmask 255.255.255.0
-  network 192.168.11.0
-  broadcast 192.168.11.255
+  netmask 255.255.0.0
+  network 169.254.0.0
+  broadcast 169.254.255.255
 EOF
 
 #TODO: setup dnsmasq?
