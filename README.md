@@ -31,6 +31,16 @@ Originally, I had this plan to make a whole distro and generate a clean disk-ima
 sudo ./setup.sh
 ```
 
+You can also run in docker, if you are not on linux,. or don't want to use `sudo`:
+
+```
+docker run --rm -it --privileged -v ${PWD}:/work ubuntu
+
+cd /work
+./setup.sh
+```
+
+
 Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi (connect USB data port to computer.)
 
 Now you can run `ssh pi@169.254.6.66` (password is `pi`)
@@ -112,7 +122,7 @@ And lots of LADSPA plugins (use with plugin~):
 sudo apt install -y ladspalist amb-plugins autotalent blepvco blop bs2b-ladspa cmt dpf-plugins-ladspa fil-plugins guitarix-ladspa invada-studio-plugins-ladspa lsp-plugins-ladspa mcp-plugins omins rev-plugins rubberband-ladspa ste-plugins swh-plugins tap-plugins vco-plugins vlevel wah-plugins zam-plugins
 ```
 
-If you want to setup samba:
+If you want to setup samba (windows networking, makes it easy to work with files):
 
 ```
 sudo apt install -y samba
@@ -149,6 +159,7 @@ sudo systemctl restart samba
 If you want a more advanced gadget setup:
 
 ```
+# disable g_ether, setup fancier service
 sudo sed -i "s/modules-load=dwc2,g_ether/modules-load=dwc2/g" /boot/firmware/cmdline.txt
 sudo cp gadget.sh /usr/local/bin
 sudo chmod 755 /usr/local/bin/gadget.sh
@@ -205,7 +216,6 @@ Since we are starting interface here, make sure to do `sudo systemctl disable pi
 
 ### todo
 
-- Does [this](https://gist.github.com/gbaman/975e2db164b3ca2b51ae11e45e8fd40a) work without DHCP?
 - get it booting faster
 - best file-sharing with host? Multi-gadget mode with [MTP](https://github.com/viveris/uMTP-Responder) would be nice, but samba is probly ok enough. [ksmb](https://docs.kernel.org/next/filesystems/cifs/ksmbd.html) looks interesting
-- best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to GUI server (and kill on-device pd, while running?)
+- best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to UI hardware service (and kill on-device pd, while running?)
