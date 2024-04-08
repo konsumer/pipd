@@ -47,6 +47,9 @@ cd /tmp/konsumer
 
 Now, you have an image (`pipd.img`) you can put on an SD card, and boot the pi (connect USB data port to computer.)
 
+
+### initial config after boot
+
 Now you can run `ssh pi@169.254.6.66` (password is `pi`)
 
 
@@ -79,7 +82,10 @@ wget -O - test.raspiaudio.com | bash
 wget -O - https://blokas.io/pisound/install-pisound.sh | sh
 ```
 
-Now, setup pipdloader:
+### pipdloader
+
+This is a standalone no-gui runtime for puredata, that hooks up to hardware, in python.
+
 
 ```
 git clone https://github.com/konsumer/pipdloader.git /home/pi/pipdloader
@@ -117,6 +123,9 @@ sudo raspi-config nonint do_serial_hw 1
 sudo raspi-config nonint do_camera 1
 ```
 
+### puredata extensions
+
+
 Here are some great plugins and stuff:
 
 ```
@@ -134,6 +143,9 @@ And lots of LADSPA plugins (use with plugin~):
 ```
 sudo apt install -y ladspalist amb-plugins autotalent blepvco blop bs2b-ladspa cmt dpf-plugins-ladspa fil-plugins guitarix-ladspa invada-studio-plugins-ladspa lsp-plugins-ladspa mcp-plugins omins rev-plugins rubberband-ladspa ste-plugins swh-plugins tap-plugins vco-plugins vlevel wah-plugins zam-plugins
 ```
+
+### samba
+
 
 If you want to setup samba (windows networking, makes it easy to work with files):
 
@@ -192,15 +204,57 @@ sudo systemctl start gadget.service
 
 ```
 
+### splash
+
+```
+sudo apt install fbi
+cat << EOF | sudo tee  /etc/systemd/system/splashscreen.service
+[Unit]
+Description=Splash screen
+DefaultDependencies=no
+After=local-fs.target
+
+[Service]
+ExecStart=/usr/bin/fbi -d /dev/fb0 --noverbose -a /opt/splash.png
+StandardInput=tty
+StandardOutput=tty
+
+[Install]
+WantedBy=sysinit.target
+EOF
+sudo systemctl enable splashscreen
+```
+
+You can also do animations with [bannerd](https://github.com/alukichev/bannerd):
+
+```
+git clone https://github.com/alukichev/bannerd.git
+cd bannerd
+make
+sudo make install
+```
+
+Then edit ExecStart above:
+
+```
+ExecStart=/bin/sh -c '/usr/local/bin/bannerd -vD /path/to/frames/*.bmp'
+```
+
+### remote graphical interface
+
 For a graphical interface, you can install RDP, which does not use much resources when you are not using it:
 
 ```
 sudo adduser pi tty
-sudo apt-get install -y xrdp tightvncserver fluxbox
+sudo apt-get install -y xrdp xorgxrdp tightvncserver fluxbox lightdm
 sudo systemctl enable xrdp
+sudo systemctl start xrdp
 
-# choose "anybody"
-sudo dpkg-reconfigure xserver-xorg-legacy
+echo "startfluxbox" > ~/.xinitrc
+
+sudo sed -i 's|/dev/dri/renderD128||' /etc/X11/xrdp/xorg.conf
+sudo raspi-config
+# choose "System Options"/"Boot / Auto Login"/"Desktop" not "Desktop Autologin"
 
 # now reboot
 ```
