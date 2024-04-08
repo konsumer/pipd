@@ -27,15 +27,17 @@ I hooked it up like this:
 
 Originally, I had this plan to make a whole distro and generate a clean disk-image, since you have to be very careful about not setting up things like ssh keys. It's a lot more work than just modifying a disk-image in-place to have the basic stuff that is needed, so I just did that. This requires real linux (not docker) because of how it mounts the image (it's a composite image that needs multiple partitions mounted.)
 
+If you are on linux:
+
 ```
 sudo ./setup.sh
 ```
 
-I was on mac, so I created a CLI debian UTM (qemu virtual machine) and shared my home-dir with the guest, then ran this inside:  
+I was on mac, so I created a CLI [debian UTM](https://mac.getutm.app/gallery/debian-12) (qemu virtual machine) and shared my home-dir with the guest, then ran this inside:  
 
 ```
 sudo -s
-mkdir  /tmp/konsumer
+mkdir /tmp/konsumer
 mount -t 9p -o trans=virtio share /tmp/konsumer
 
 cd /tmp/konsumer
@@ -61,7 +63,16 @@ Now, for sound:
 
 ```
 # if you are using raspiaudio
-wget -O - mic.raspiaudio.com | bash
+
+# old way: doesn't really work
+# wget -O - mic.raspiaudio.com | bash
+
+# new way: just enable the overlay
+printf '\ndtoverlay=googlevoicehat-soundcard\n' | sudo tee -a /boot/firmware/config.txt
+
+# now reboot
+
+# test sound/gpio
 wget -O - test.raspiaudio.com | bash
 
 # if you are using pisound
@@ -161,11 +172,6 @@ sudo systemctl restart samba
 If you want a more advanced gadget setup:
 
 ```
-# disable g_ether, setup fancier service
-sudo sed -i "s/modules-load=dwc2,g_ether/modules-load=dwc2/g" /boot/firmware/cmdline.txt
-sudo cp gadget.sh /usr/local/bin
-sudo chmod 755 /usr/local/bin/gadget.sh
-
 cat << EOF | sudo tee /etc/systemd/system/gadget.service
 [Unit]
 Description=Gadget
@@ -186,35 +192,20 @@ sudo systemctl start gadget.service
 
 ```
 
-
-You can install Xwindows/VNC, and it does not take too much resources when you are not using it:
-
+For a graphical interface, you can install RDP, which does not use much resources when you are not using it:
 
 ```
-sudo apt install -y x11vnc fluxbox lightdm xterm
-x11vnc -storepasswd
-mkdir -p ~/.fluxbox
+sudo adduser pi tty
+sudo apt-get install -y xrdp tightvncserver fluxbox
+sudo systemctl enable xrdp
 
-cat << EOF >  ~/.fluxbox/startup
-xmodmap "/home/pi/.Xmodmap"
-which fbautostart > /dev/null
-if [ $? -eq 0 ]; then
-    fbautostart
-fi
+# choose "anybody"
+sudo dpkg-reconfigure xserver-xorg-legacy
 
-xset s off
-
-x11vnc -forever -usepw -display :0 -ultrafilexfer &
-
-/home/pi/pipdloader/pipdloader.py --fullscreen --rotary 8 /home/pi/pd/MAIN.pd &
-
-exec fluxbox
-EOF
+# now reboot
 ```
 
-Now, enable auto-login in `raspi-config` ("System Options"/"Boot / Auto Login"/"Desktop Auto-login")
-
-Since we are starting interface here, make sure to do `sudo systemctl disable pipd.service`
+Windows has RDP built-in, and you can download a nice client (from MS) for mac, and linux has a few clients.
 
 
 ### todo
@@ -223,5 +214,4 @@ Since we are starting interface here, make sure to do `sudo systemctl disable pi
 - best file-sharing with host? Multi-gadget mode with [MTP](https://github.com/viveris/uMTP-Responder) would be nice, but samba is probly ok enough. [ksmb](https://docs.kernel.org/next/filesystems/cifs/ksmbd.html) looks interesting
 - best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to UI hardware service (and kill on-device pd, while running?)
 - parse regular puredata config for pipdoader, so config can go there, and regular pd will be able to share
-- [RDP](https://phoenixnap.com/kb/xrdp-ubuntu) might be easier than VNC for windows people
-- [realtime kernel](https://wiki.linuxaudio.org/wiki/raspberrypi) will help wiht audio performance
+- [realtime kernel & jack](https://wiki.linuxaudio.org/wiki/raspberrypi) will help with audio performance
