@@ -65,7 +65,7 @@ wget -O - mic.raspiaudio.com | bash
 wget -O - test.raspiaudio.com | bash
 
 # if you are using pisound
-curl https://blokas.io/pisound/install-pisound.sh | sh
+wget -O - https://blokas.io/pisound/install-pisound.sh | sh
 ```
 
 Now, setup pipdloader:
@@ -223,3 +223,4 @@ Since we are starting interface here, make sure to do `sudo systemctl disable pi
 - best file-sharing with host? Multi-gadget mode with [MTP](https://github.com/viveris/uMTP-Responder) would be nice, but samba is probly ok enough. [ksmb](https://docs.kernel.org/next/filesystems/cifs/ksmbd.html) looks interesting
 - best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to UI hardware service (and kill on-device pd, while running?)
 - parse regular puredata config for pipdoader, so config can go there, and regular pd will be able to share
+- [RDP](https://phoenixnap.com/kb/xrdp-ubuntu) might be easier than VNC for windows people
