@@ -11,7 +11,8 @@ fi
 
 IMG_URL="https://downloads.raspberrypi.com/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz"
 
-apt-get install -y wget xz-utils
+apt-get update
+apt-get install -y wget xz-utils parted udev
 
 if [ ! -f pipd-source.img ];then
   wget "${IMG_URL}" -O pipd-source.img.xz

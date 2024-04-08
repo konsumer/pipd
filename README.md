@@ -25,18 +25,20 @@ I hooked it up like this:
 
 ## Setup
 
-Originally, I had this plan to make a whole distro and generate a clean disk-image, since you have to be very careful about not setting up things like ssh keys. It's a lot more work than just modifying a disk-image in-place to have the basic stuff that is needed, so I just did that.
+Originally, I had this plan to make a whole distro and generate a clean disk-image, since you have to be very careful about not setting up things like ssh keys. It's a lot more work than just modifying a disk-image in-place to have the basic stuff that is needed, so I just did that. This requires real linux (not docker) because of how it mounts the image (it's a composite image that needs multiple partitions mounted.)
 
 ```
 sudo ./setup.sh
 ```
 
-You can also run in docker, if you are not on linux,. or don't want to use `sudo`:
+I was on mac, so I created a CLI debian UTM (qemu virtual machine) and shared my home-dir with the guest, then ran this inside:  
 
 ```
-docker run --rm -it --privileged -v ${PWD}:/work ubuntu
+sudo -s
+mkdir  /tmp/konsumer
+mount -t 9p -o trans=virtio share /tmp/konsumer
 
-cd /work
+cd /tmp/konsumer
 ./setup.sh
 ```
 
