@@ -224,3 +224,4 @@ Since we are starting interface here, make sure to do `sudo systemctl disable pi
 - best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to UI hardware service (and kill on-device pd, while running?)
 - parse regular puredata config for pipdoader, so config can go there, and regular pd will be able to share
 - [RDP](https://phoenixnap.com/kb/xrdp-ubuntu) might be easier than VNC for windows people
+- [realtime kernel](https://wiki.linuxaudio.org/wiki/raspberrypi) will help wiht audio performance
