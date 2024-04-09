@@ -1,3 +1,5 @@
+#pragma once
+
 /*
  * MIT License
 
@@ -27,9 +29,6 @@ SOFTWARE.
  *  Author     : Vinay Divakar
  *  Website    : www.deeplyembedded.org
  */
-
-#ifndef SSD1306_OLED_H_
-#define SSD1306_OLED_H_
 
 /* Lib's */
 #include <stdbool.h>
@@ -187,5 +186,6 @@ extern short printNumber_I(int n, int base);
 extern short printNumber_I_ln(int n, int base);
 extern short printFloat(double number, unsigned char digits);
 extern short printFloat_ln(double num, int digits);
-#endif /* SSD1306_OLED_H_ */
+
+
 
