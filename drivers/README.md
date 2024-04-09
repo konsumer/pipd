@@ -18,11 +18,11 @@ Basically, initialize the i2c bus with `pi_i2c` then connect that outlet to the 
 
 ```
 pi_i2c
-  params
-    bus - int, same as i2cdetect, default:1
+  inlet 1 messages
+    INT - connect to a bus (same as i2cdetect, try 1)
 
   outlet 1 messages
-
+    connect FD - this tells other patches what i2c bus to connect to
 
 4encoder
   params
