@@ -82,14 +82,12 @@ wget -O - test.raspiaudio.com | bash
 wget -O - https://blokas.io/pisound/install-pisound.sh | sh
 ```
 
-### pipdloader
+### puredata
 
-This is a standalone no-gui runtime for puredata, that hooks up to hardware, in python.
+We want to start a service that will run puredata.
 
 
 ```
-git clone https://github.com/konsumer/pipdloader.git /home/pi/pipdloader
-
 cat << EOF | sudo tee /etc/systemd/system/pipd.service
 [Unit]
 Description=PiPd
@@ -99,17 +97,14 @@ DefaultDependencies=false
 Type=simple
 User=pi
 Group=pi
-ExecStart=/home/pi/pipdloader/pipdloader.py --oled --rotary 4 /home/pi/pipdloader/patches/demo.pd
+ExecStart=puredata /home/pi/pd/MAIN.pd
 
 [Install]
 WantedBy=sysinit.target
 EOF
-
-sudo /home/pi/pipdloader/setup.sh
-sudo systemctl enable pipd.service
 ```
 
-Feel free to modify `/etc/systemd/system/pipd.service` to support your hardware or whatever patches you want.
+Feel free to modify `/etc/systemd/system/pipd.service` to support your hardware, libs, or whatever patches you want. I also like to point it at a script for eassier editing.
 
 Here is some stuff for i2c:
 
@@ -181,6 +176,12 @@ sudo systemctl enable samba
 sudo systemctl restart samba
 ```
 
+### advanced gadget
+
+> [!WARNING]  
+> I didn't quite get this working right, but I included the script.
+
+
 If you want a more advanced gadget setup:
 
 ```
@@ -205,6 +206,8 @@ sudo systemctl start gadget.service
 ```
 
 ### splash
+
+THis is if you have a regular monitor adttached (not OLED):
 
 ```
 sudo apt install fbi
@@ -242,6 +245,9 @@ ExecStart=/bin/sh -c '/usr/local/bin/bannerd -vD /path/to/frames/*.bmp'
 
 ### remote graphical interface
 
+> [!WARNING]  
+> I didn't quite get this working right. RDP seems finicky. VNC works, though, if you want that.
+
 For a graphical interface, you can install RDP, which does not use much resources when you are not using it:
 
 ```
@@ -267,5 +273,5 @@ Windows has RDP built-in, and you can download a nice client (from MS) for mac, 
 - get it booting faster
 - best file-sharing with host? Multi-gadget mode with [MTP](https://github.com/viveris/uMTP-Responder) would be nice, but samba is probly ok enough. [ksmb](https://docs.kernel.org/next/filesystems/cifs/ksmbd.html) looks interesting
 - best way to share hardware with host: how can we operate/edit the patch on host, but use all the same hardware on device? It would also be nice to be able to run deken to install more extensions. Look into `gui` options. plugdata is nice as a VST on host, too, so maybe host does all audio, but can connect to UI hardware service (and kill on-device pd, while running?)
-- parse regular puredata config for pipdoader, so config can go there, and regular pd will be able to share
+- Use regular puredata config for pi user (so CLI options are neater)
 - [realtime kernel & jack](https://wiki.linuxaudio.org/wiki/raspberrypi) will help with audio performance
