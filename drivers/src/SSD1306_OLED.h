@@ -30,8 +30,14 @@ SOFTWARE.
  *  Website    : www.deeplyembedded.org
  */
 
-/* Lib's */
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+#include <math.h>
+#include "I2C.h"
+#include "gfxfont.h"
 
 /* Find Min and Max - MACROS */
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -132,8 +138,7 @@ SOFTWARE.
 extern void clearDisplay();
 extern void display_Init_seq();
 extern void Display();
-extern void Init_Col_PG_addrs(unsigned char col_start_addr, unsigned char col_end_addr,
-		unsigned char pg_start_addr, unsigned char pg_end_addr);
+extern void Init_Col_PG_addrs(unsigned char col_start_addr, unsigned char col_end_addr, unsigned char pg_start_addr, unsigned char pg_end_addr);
 extern void setRotation(unsigned char x);
 extern void startscrollright(unsigned char start, unsigned char stop);
 extern void startscrollleft(unsigned char start, unsigned char stop);

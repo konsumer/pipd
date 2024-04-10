@@ -10,10 +10,27 @@
 #define ENCODER4_ENCODER 0x11
 #define ENCODER4_NEOPIXEL 0x0E
 
+// commands
+#define ENCODER4_NEOPIXEL_BUF_LENGTH 0x03
+#define ENCODER4_NEOPIXEL_BUF 0x04
+#define ENCODER4_NEOPIXEL_SHOW 0x05
+
 // ref: https://learn.adafruit.com/adafruit-seesaw-atsamd09-breakout/reading-and-writing-data
 
-void encoder4_color_hsv(uint8_t index, ColorHSV color);
-void encoder4_color_rgb(uint8_t index, ColorRGB color);
-void encoder4_rotary_set(uint8_t index, int32_t value);
-int32_t encoder4_rotary_get(uint8_t index);
-uint8_t encoder4_button_get(uint8_t index);
+// sets the length of RGB LEDs 0-170 - not sure if I need this
+void encoder4_set_length(int fd, uint8_t len);
+
+// Set color using HSV
+void encoder4_color_hsv(int fd, uint8_t index, ColorHSV color);
+
+// Set color using RGB
+void encoder4_color_rgb(int fd, uint8_t index, ColorRGB color);
+
+// Set the current value of a rotary-encoder
+void encoder4_rotary_set(int fd, uint8_t index, int32_t value);
+
+// Get the current value of a rotary-encoder
+int32_t encoder4_rotary_get(int fd, uint8_t index);
+
+// Get the current value of a button (push down rotary-encoder)
+uint8_t encoder4_button_get(int fd, uint8_t index);

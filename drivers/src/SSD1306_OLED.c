@@ -29,15 +29,7 @@ SOFTWARE.
  *  Website     : www.deeplyembedded.org
  */
 
-/* Lib Includes */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdint.h>
-#include <math.h>
-#include "I2C.h"
 #include "SSD1306_OLED.h"
-#include "gfxfont.h"
 
 /* Enable or Disable DEBUG Prints */
 //#define SSD1306_DBG

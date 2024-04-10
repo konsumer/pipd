@@ -32,7 +32,6 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < 4; i++) {
       printf("%d %s  ", encoder4_rotary_get(fd, i), encoder4_button_get(fd, i) == 1 ? "⚪" : "⚫");
     }
-    printf("| %s", encoder4_switch_get(fd) ? "⚪" : "⚫");
     fflush(stdout);
   }
 
