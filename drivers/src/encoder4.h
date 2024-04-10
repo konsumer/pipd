@@ -3,17 +3,14 @@
 #include "I2C.h"
 #include "hsv_to_rgb.h"
 
-// default address, if it hasn;t been chnaged
-#define ENCODER8_ADDR 0x41
+// default address
+#define ENCODER4_ADDR 0x49
 
-// registers
-#define ENCODER8_INCREMENT 0x20
-#define ENCODER8_BUTTON 0x50
-#define ENCODER8_SWITCH 0x60
-#define ENCODER8_RGB_LED 0x70
-#define ENCODER8_RESET_COUNTER 0x40
-#define ENCODER8_FIRMWARE_VERSION 0xFE
-#define ENCODER8_I2C_ADDRESS 0xFF
+// base registers
+#define ENCODER4_ENCODER 0x11
+#define ENCODER4_NEOPIXEL 0x0E
+
+// ref: https://learn.adafruit.com/adafruit-seesaw-atsamd09-breakout/reading-and-writing-data
 
 void encoder4_color_hsv(uint8_t index, ColorHSV color);
 void encoder4_color_rgb(uint8_t index, ColorRGB color);

@@ -3,7 +3,7 @@
 /*
  * MIT License
 
-Copyright (c) 2017 DeeplyEmbedded
+Copyright (c) 2024 David Konsumer (konsumer)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,43 +23,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
- * I2C.h
- *
- *  Created on  : Sep 4, 2017
- *  Author      : Vinay Divakar
- *  Website     : www.deeplyembedded.org
- */
-
-/*
-
-Simplified by David Konsumer (konsumer) 2024
-
 */
 
 #include <stdint.h>
 
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
+#include <linux/i2c.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-// heuristic to guess what version of i2c-dev.h we have:
-// the one installed with `apt-get install libi2c-dev`
-// would conflict with linux/i2c.h, while the stock
-// one requires linus/i2c.h
-#ifndef I2C_SMBUS_BLOCK_MAX
-// If this is not defined, we have the "stock" i2c-dev.h
-// so we include linux/i2c.h
-#include <linux/i2c.h>
-#endif
 
-/* Exposed Generic I2C Functions */
-extern int i2c_open(uint8_t i2cdevnum);
-extern int i2c_close(int fd);
-extern int i2c_set_addr(int fd, unsigned char slave_addr);
-extern int i2c_write(int fd, unsigned char data);
-extern int i2c_read(int fd, unsigned char* read_data);
-extern int i2c_read_register(int fd, unsigned char read_addr, unsigned char* read_data);
-extern int i2c_read_registers(int fd, int num, unsigned char starting_addr, unsigned char* buff_Ptr);
-extern int i2c_multiple_writes(int fd, int num, unsigned char* Ptr_buff);
-extern int i2c_write_register(int fd, unsigned char reg_addr_or_cntrl, unsigned char val);
+// open i2c bus
+int i2c_open(uint8_t i2cdevnum);
+
+// close i2c bus
+int i2c_close(int fd);
+
+// set address of device to use
+int i2c_set_addr(int fd, unsigned char slave_addr);
+
+// Get a value, by register
+bool i2c_get_register_val(int fd, int reg, void* out_pntr, uint8_t len);
+
+// Set a value, by register (max length 32 bytes)
+bool i2c_set_register_val(int fd, int reg, void* in_ptr, uint8_t len);
