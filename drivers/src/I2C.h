@@ -28,45 +28,38 @@ SOFTWARE.
  *  Created on  : Sep 4, 2017
  *  Author      : Vinay Divakar
  *  Website     : www.deeplyembedded.org
- */ 
+ */
 
-#include<stdint.h>
+/*
 
-/* No. of bytes per transaction */
-#define I2C_ONE_BYTE                     1
-#define I2C_TWO_BYTES                    2
-#define I2C_THREE_BYTES                  3
+Simplified by David Konsumer (konsumer) 2024
 
-/*Definitions specific to i2c-x */
-#define I2C_DEV0_PATH                     "/dev/i2c-0"
-#define I2C_DEV1_PATH                     "/dev/i2c-1"
-#define I2C_DEV2_PATH                     "/dev/i2c-2"
+*/
 
-/*I2C device configuration structure*/
-typedef struct{
-	char* i2c_dev_path;
-	int fd_i2c;
-	unsigned char i2c_slave_addr;
-}I2C_DeviceT, *I2C_DevicePtr;
+#include <stdint.h>
 
-/* Exposed objects for i2c-x */
-I2C_DeviceT I2C_DEV_1;
-I2C_DeviceT I2C_DEV_2;
+#include <fcntl.h>
+#include <linux/i2c-dev.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+// heuristic to guess what version of i2c-dev.h we have:
+// the one installed with `apt-get install libi2c-dev`
+// would conflict with linux/i2c.h, while the stock
+// one requires linus/i2c.h
+#ifndef I2C_SMBUS_BLOCK_MAX
+// If this is not defined, we have the "stock" i2c-dev.h
+// so we include linux/i2c.h
+#include <linux/i2c.h>
+#endif
 
 /* Exposed Generic I2C Functions */
-extern int Open_device(char *i2c_dev_path, int *fd);
-extern int Close_device(int fd);
-extern int Set_slave_addr(int fd, unsigned char slave_addr);
+extern int i2c_open(uint8_t i2cdevnum);
+extern int i2c_close(int fd);
+extern int i2c_set_addr(int fd, unsigned char slave_addr);
 extern int i2c_write(int fd, unsigned char data);
-extern int i2c_read(int fd, unsigned char *read_data);
-extern int i2c_read_register(int fd, unsigned char read_addr, unsigned char *read_data);
-extern int i2c_read_registers(int fd, int num, unsigned char starting_addr,
-		unsigned char *buff_Ptr);
-extern void config_i2c_struct(char *i2c_dev_path, unsigned char slave_addr, I2C_DevicePtr i2c_dev);
-extern int i2c_multiple_writes(int fd, int num, unsigned char *Ptr_buff);
+extern int i2c_read(int fd, unsigned char* read_data);
+extern int i2c_read_register(int fd, unsigned char read_addr, unsigned char* read_data);
+extern int i2c_read_registers(int fd, int num, unsigned char starting_addr, unsigned char* buff_Ptr);
+extern int i2c_multiple_writes(int fd, int num, unsigned char* Ptr_buff);
 extern int i2c_write_register(int fd, unsigned char reg_addr_or_cntrl, unsigned char val);
-
-/* Exposed I2C-x Specific Functions */
-extern int init_i2c_dev1(const char* i2c_path, unsigned char slave_address);
-extern int init_i2c_dev2(const char* i2c_path, unsigned char slave_address);
-
