@@ -1,5 +1,5 @@
 > [!WARNING]  
-> I am still workign on this.
+> I am still working on this.
 
 This is 3 C libs for use with i2c devices & pi:
 
@@ -17,6 +17,8 @@ Make sure to add this to your `/boot/firmware/config.txt`:
 # dtparam=i2c_arm=on,i2c_arm_baudrate=400000
 dtparam=i2c_arm=on,i2c_arm_baudrate=1000000
 ```
+
+The OLED/i2c code came from [here](https://github.com/giuliomoro/OSC2OLED4Bela)
 
 ## building
 

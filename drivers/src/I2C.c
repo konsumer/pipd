@@ -53,10 +53,6 @@ typedef char i2c_char_t;
 #include "I2C.h"
 
 
-/* Exposed objects for i2c-x */
-I2C_DeviceT I2C_DEV_1;
-I2C_DeviceT I2C_DEV_2;
-
 /****************************************************************
  * Function Name : Open_device
  * Description   : Opens the I2C device to use

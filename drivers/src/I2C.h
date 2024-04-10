@@ -49,6 +49,10 @@ typedef struct{
 	unsigned char i2c_slave_addr;
 }I2C_DeviceT, *I2C_DevicePtr;
 
+/* Exposed objects for i2c-x */
+I2C_DeviceT I2C_DEV_1;
+I2C_DeviceT I2C_DEV_2;
+
 /* Exposed Generic I2C Functions */
 extern int Open_device(char *i2c_dev_path, int *fd);
 extern int Close_device(int fd);
