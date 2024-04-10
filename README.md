@@ -6,7 +6,8 @@ This will work with pizero(2w) and pi4.
 
 It should send a splash-screen to the OLED very quickly, and then load a few systemd services in the background to make it all run smoothly, and as "normal" as possible.
 
-It's basically a wrapper around [pipdloader](https://github.com/konsumer/pipdloader).
+You can use the [C lib](drivers/) or [puredata extensions](extensions), or [setup.sh](setup.sh) to build an OS image. Read [SETUP](SETUP.md) for some customization ideas.
+
 
 ## Hardware
 
@@ -22,13 +23,7 @@ I hooked it up like this:
 - Connect rotary-encoders board to "expansion port" (i2c) of sound-board, using a Qwiik connector.
 - Run another Qwiik connector to the OLED from rotary-board.
 
-
 In [another synth](https://github.com/konsumer/bellasynth) I used:
 
 - [an i2c 8 rotary-encoder thing](https://docs.m5stack.com/en/unit/8Encoder)
 - a small HDMI LCD screen (uses regular Linux video stuff.)
-
-
-You can use the [C lib](drivers/) or [puredata extensions](extensions).
-
-Read [SETUP](SETUP.md) for some customization ideas.
