@@ -14,26 +14,29 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  int i = 0;
+
   ColorRGB c = {0};
-  for (int i = 0; i < 4; i++) {
+  c.r = 255;
+  for (i = 0; i < 4; i++) {
     encoder4_color_rgb(fd, i, c);
   }
 
   // make a rainbow
   ColorHSV color = {.h = 0, .s = 1, .v = 1};
-  for (int i = 0; i < 4; i++) {
+  for (i = 0; i < 4; i++) {
     color.h = 0.25 * i;
     encoder4_color_hsv(fd, i, color);
   }
 
   // draw single-line indicator of rotaries/buttons
-  while (true) {
-    printf("\r");
-    for (int i = 0; i < 4; i++) {
-      printf("%d %s  ", encoder4_rotary_get(fd, i), encoder4_button_get(fd, i) == 1 ? "⚪" : "⚫");
-    }
-    fflush(stdout);
-  }
+  // while (true) {
+  //   printf("\r");
+  //   for (i = 0; i < 4; i++) {
+  //     printf("%d %s  ", encoder4_rotary_get(fd, i), encoder4_button_get(fd, i) == 1 ? "⚪" : "⚫");
+  //   }
+  //   fflush(stdout);
+  // }
 
   i2c_close(fd);
   return 0;

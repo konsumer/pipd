@@ -4,13 +4,13 @@ void encoder4_set_length(int fd, uint8_t len) {
   uint8_t buf[3] = {0};
   buf[0] = ENCODER4_NEOPIXEL_BUF_LENGTH;
   uint16_t len16 = len * 3;
-  memcpy(buf + 1, &len16);
+  memcpy(buf + 1, &len16, len);
   i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 3);
 }
 
 
 void encoder4_color_hsv(int fd, uint8_t index, ColorHSV color) {
-  encoder4_color_rgb(index, hsv_to_rgb(color));
+  encoder4_color_rgb(fd, index, hsv_to_rgb(color));
 }
 
 void encoder4_color_rgb(int fd, uint8_t index, ColorRGB color) {
