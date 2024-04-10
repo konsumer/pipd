@@ -23,6 +23,12 @@ I hooked it up like this:
 - Run another Qwiik connector to the OLED from rotary-board.
 
 
+In [another synth](https://github.com/konsumer/bellasynth) I used:
+
+- [an i2c 8 rotary-encoder thing](https://docs.m5stack.com/en/unit/8Encoder)
+- a small HDMI LCD screen (uses regular Linux video stuff.)
+
+
 You can use the [C lib](drivers/) or [puredata extensions](extensions).
 
 Read [SETUP](SETUP.md) for some customization ideas.

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "I2C.h"
-#include "colors.h"
+#include "hsv_to_rgb.h"
 
 void encoder8_color_hsv(uint8_t index, ColorHSV color);
 void encoder8_color_rgb(uint8_t index, ColorRGB color);
