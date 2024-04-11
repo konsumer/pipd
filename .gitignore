@@ -6,3 +6,4 @@ drivers/test_encoder4
 drivers/test_encoder8
 drivers/test_oled
 *.swp
+._*
