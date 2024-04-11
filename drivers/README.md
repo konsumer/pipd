@@ -44,3 +44,4 @@ Here is some reference that helped me make this:
 ## TODO
 
 - 4-encoder is going to [need new seesaw firmware](https://learn.adafruit.com/adafruit-attiny817-seesaw/reloading-the-seesaw-firmware) since I cannot set rotary values.
+- can I use message-len:3 and offset to set single pixels on 4.encoder? This would act a bit more like 8-encoder, even if it takes more bytes for all of them.
