@@ -43,12 +43,13 @@ int i2c_set_addr(int fd, unsigned char slave_addr) {
 
 // Get a value, by register
 bool i2c_get_register_val(int fd, int reg, void* out_pntr, uint8_t len) {
-  if (write(fd, &reg, 1) != 1) {
+  if (i2c_write(fd, &reg, 1) != 1) {
     return false;
   }
-  if (read(fd, out_pntr, len) != len) {
+  if (i2c_read(fd, out_pntr, len) != len) {
     return false;
   }
+
   return true;
 }
 
@@ -58,7 +59,35 @@ bool i2c_set_register_val(int fd, int reg, void* in_ptr, uint8_t len) {
   msg[0] = reg;
   memcpy(msg + 1, in_ptr, len);
 
-  if (write(fd, msg, len + 1) != (len + 1)) {
+  if (i2c_write(fd, msg, len + 1) != (len + 1)) {
     return false;
   }
+}
+
+int i2c_read(int fd, void* buf, uint8_t len) {
+  int out = read(fd, buf, len);
+#ifdef I2C_DEBUG
+  uint8_t msg[len];
+  memcpy(msg, buf, len);
+  printf("read: ");
+  for (int i = 0; i < len; i++) {
+    printf("0x%.2x ", msg[i]);
+  }
+  printf("\n");
+#endif
+  return out;
+}
+
+int i2c_write(int fd, void* buf, uint8_t len) {
+  int out = write(fd, buf, len);
+#ifdef I2C_DEBUG
+  uint8_t msg[len];
+  memcpy(msg, buf, len);
+  printf("write: ");
+  for (int i = 0; i < len; i++) {
+    printf("0x%.2x ", msg[i]);
+  }
+  printf("\n");
+#endif
+  return out;
 }

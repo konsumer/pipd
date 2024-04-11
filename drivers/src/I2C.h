@@ -36,6 +36,9 @@ SOFTWARE.
 #include <sys/ioctl.h>
 #include <unistd.h>
 
+// Use this to debug
+// #define I2C_DEBUG
+
 // open i2c bus
 int i2c_open(uint8_t i2cdevnum);
 
@@ -48,5 +51,11 @@ int i2c_set_addr(int fd, unsigned char slave_addr);
 // Get a value, by register
 bool i2c_get_register_val(int fd, int reg, void* out_pntr, uint8_t len);
 
-// Set a value, by register (max length 32 bytes)
+// Set a value, by register
 bool i2c_set_register_val(int fd, int reg, void* in_ptr, uint8_t len);
+
+// Just plain read-bytes
+int i2c_read(int fd, void* buf, uint8_t len);
+
+// Just plain write-bytes
+int i2c_write(int fd, void* buf, uint8_t len);
