@@ -20,6 +20,10 @@ int main(int argc, char* argv[]) {
 
   int i = 0;
 
+  for (i = 0; i < 4; i++) {
+    encoder4_rotary_set(fd, i, 1000);
+  }
+
   // make a rainbow
   ColorHSV color = {.h = 0, .s = 1, .v = 1};
   for (i = 0; i < 4; i++) {
@@ -33,7 +37,7 @@ int main(int argc, char* argv[]) {
   // draw single-line indicator of rotaries/buttons
   while (true) {
     encoder4_buttons_get(fd, out);
-    printf("                                                                             \r");
+    printf("                                                          \r");
     for (i = 0; i < 4; i++) {
       printf("%d %s  ", encoder4_rotary_get(fd, i), out[i] == 1 ? "⚪" : "⚫");
     }

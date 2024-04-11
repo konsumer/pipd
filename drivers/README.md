@@ -40,3 +40,7 @@ Here is some reference that helped me make this:
 - [specs for 8encoder](https://docs.m5stack.com/en/unit/8Encoder)
 - [specs for seesaw](https://learn.adafruit.com/adafruit-seesaw-atsamd09-breakout/using-the-seesaw-platform) helped with 4encoder
 - [this python file](../demo.py) - I try to use all circuitpython/blinka in python, so it can really help to see what messages were sent and what comes back
+
+## TODO
+
+- 4-encoder is going to [need new seesaw firmware](https://learn.adafruit.com/adafruit-attiny817-seesaw/reloading-the-seesaw-firmware) since I cannot set rotary values.
