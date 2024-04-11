@@ -14,6 +14,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
+  encoder4_setup(fd);
+
   int i = 0;
 
   ColorRGB c = {0};

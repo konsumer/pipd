@@ -1,28 +1,29 @@
 #include "encoder4.h"
 
-void encoder4_set_length(int fd, uint8_t len) {
-  uint8_t buf[3] = {0};
+void encoder4_setup(int fd) {
+  uint8_t buf[2] = { ENCODER4_NEOPIXEL_PIN, 18 };
+  i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 2);
+
   buf[0] = ENCODER4_NEOPIXEL_BUF_LENGTH;
-  uint16_t len16 = len * 3;
-  memcpy(buf + 1, &len16, len);
-  i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 3);
-}
-
-
-void encoder4_color_hsv(int fd, uint8_t index, ColorHSV color) {
-  encoder4_color_rgb(fd, index, hsv_to_rgb(color));
+  buf[1] = 12; // 4 * 3 (RGB)
+  i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 2);
 }
 
 void encoder4_color_rgb(int fd, uint8_t index, ColorRGB color) {
-  uint8_t buf[4] = {
-    ENCODER4_NEOPIXEL_BUF + (index * 3),
+  uint8_t buf[5] = {
+    ENCODER4_NEOPIXEL_BUF,
+    index,
     color.r,
     color.g,
     color.b
   };
-  i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 4);
+  i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 5);
   buf[0] = ENCODER4_NEOPIXEL_SHOW;
   i2c_set_register_val(fd, ENCODER4_NEOPIXEL, &buf, 1);
+}
+
+void encoder4_color_hsv(int fd, uint8_t index, ColorHSV color) {
+  encoder4_color_rgb(fd, index, hsv_to_rgb(color));
 }
 
 void encoder4_rotary_set(int fd, uint8_t index, int32_t value) {}

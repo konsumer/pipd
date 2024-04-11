@@ -11,14 +11,16 @@
 #define ENCODER4_NEOPIXEL 0x0E
 
 // commands
+#define ENCODER4_NEOPIXEL_PIN 0x01
+#define ENCODER4_NEOPIXEL_SPEED 0x02
 #define ENCODER4_NEOPIXEL_BUF_LENGTH 0x03
 #define ENCODER4_NEOPIXEL_BUF 0x04
 #define ENCODER4_NEOPIXEL_SHOW 0x05
 
 // ref: https://learn.adafruit.com/adafruit-seesaw-atsamd09-breakout/reading-and-writing-data
 
-// sets the length of RGB LEDs 0-170 - not sure if I need this
-void encoder4_set_length(int fd, uint8_t len);
+// Setup encoder(pins, etc)
+void encoder4_setup(int fd);
 
 // Set color using HSV
 void encoder4_color_hsv(int fd, uint8_t index, ColorHSV color);
