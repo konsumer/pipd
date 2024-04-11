@@ -95,6 +95,11 @@ int32_t encoder4_rotary_get(int fd, uint8_t index) {
   return (buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | buf[3];
 }
 
+// TODO
+void encoder4_rotary_set(int fd, uint8_t index, int32_t value) {
+  
+}
+
 uint8_t encoder4_button_get(int fd, uint8_t index) {
   uint8_t buf[4] = {0};
   buf[0] = ENCODER4_GPIO_GPIO;

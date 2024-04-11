@@ -34,8 +34,13 @@ void encoder4_colors_rgb(int fd, ColorRGB color[4]);
 // Get the current value of a rotary-encoder
 int32_t encoder4_rotary_get(int fd, uint8_t index);
 
+// Set current value of rotary
+void encoder4_rotary_set(int fd, uint8_t index, int32_t value);
+
 // Get the current value of a button (push down rotary-encoder)
 uint8_t encoder4_button_get(int fd, uint8_t index);
 
 // Get all button values at once
 void encoder4_buttons_get(int fd, uint8_t out[4]);
+
+
