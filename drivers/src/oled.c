@@ -379,12 +379,12 @@ void clearDisplay()
 }
 
 /****************************************************************
- * Function Name : display_Init_seq
+ * Function Name : oled_setup
  * Description   : Performs SSD1306 OLED Initialization Sequence
  * Returns       : NONE.
  * Params        : NONE.
  ****************************************************************/
-void display_Init_seq(int fd)
+void oled_setup(int fd)
 {
     /* Add the reset code, If needed */
 

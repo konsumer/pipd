@@ -149,7 +149,7 @@ typedef struct {                               // Data stored for FONT AS A WHOL
 
 /*SSD1306 Display API's */
 extern void clearDisplay();
-extern void display_Init_seq(int fd);
+extern void oled_setup(int fd);
 extern void Display(int fd);
 extern void Init_Col_PG_addrs(int fd, unsigned char col_start_addr, unsigned char col_end_addr, unsigned char pg_start_addr, unsigned char pg_end_addr);
 extern void setRotation(unsigned char x);
