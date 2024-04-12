@@ -149,20 +149,20 @@ typedef struct {                               // Data stored for FONT AS A WHOL
 
 /*SSD1306 Display API's */
 extern void clearDisplay();
-extern void display_Init_seq();
-extern void Display();
-extern void Init_Col_PG_addrs(unsigned char col_start_addr, unsigned char col_end_addr, unsigned char pg_start_addr, unsigned char pg_end_addr);
+extern void display_Init_seq(int fd);
+extern void Display(int fd);
+extern void Init_Col_PG_addrs(int fd, unsigned char col_start_addr, unsigned char col_end_addr, unsigned char pg_start_addr, unsigned char pg_end_addr);
 extern void setRotation(unsigned char x);
-extern void startscrollright(unsigned char start, unsigned char stop);
-extern void startscrollleft(unsigned char start, unsigned char stop);
-extern void startscrolldiagright(unsigned char start, unsigned char stop);
-extern void startscrolldiagleft(unsigned char start, unsigned char stop);
-extern void stopscroll();
+extern void startscrollright(int fd, unsigned char start, unsigned char stop);
+extern void startscrollleft(int fd, unsigned char start, unsigned char stop);
+extern void startscrolldiagright(int fd, unsigned char start, unsigned char stop);
+extern void startscrolldiagleft(int fd, unsigned char start, unsigned char stop);
+extern void stopscroll(int fd);
 extern void setCursor(short x, short y);
 extern short getCursorX();
 extern short getCursorY();
 extern unsigned char getRotation();
-extern void invertDisplay(unsigned char i);
+extern void invertDisplay(int fd, unsigned char i);
 
 /*SSD1306 Graphics Handling API's */
 extern signed char drawPixel(short x, short y, short color);
