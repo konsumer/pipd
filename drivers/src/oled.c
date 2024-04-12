@@ -61,14 +61,49 @@ static short print(const unsigned char *buffer, short size);
 
 // compat-layer to use my i2c lib
 
-static int i2c_multiple_writes(int fd, int num, unsigned char *Ptr_buff){
-  // TODO
-  return 0;
+/****************************************************************
+ * Function Name : i2c_multiple_writes
+ * Description   : Write multiple bytes on SDA
+ * Returns       : No. of bytes written on success, -1 on failure
+ * Params        @fd: file descriptor
+ *               @num: No. of bytes to write
+ *               @Ptr_buff: Pointer to the buffer containing the
+ *               bytes to be written on the SDA
+ ****************************************************************/
+int i2c_multiple_writes(int fd, int num, unsigned char *Ptr_buff)
+{
+  int ret = 0;
+  ret = write(fd, Ptr_buff, num);
+  if((ret == -1) || (ret != num)) {
+    return -1;
+  } else {
+    return(ret);
+  }
 }
 
-static int i2c_write_register(int fd, unsigned char reg_addr_or_cntrl, unsigned char val){
-  // TODO
-  return 0;
+
+/****************************************************************
+ * Function Name : i2c_write_register
+ * Description   : Write a control byte or byte to a register
+ * Returns       : No. of bytes written on success, -1 on failure
+ * Params        @fd: file descriptor
+ *               @reg_addr_or_cntrl: Control byte or Register
+ *               address to be written
+ *               @val: Command or value to be written in the
+ *               addressed register
+ ****************************************************************/
+int i2c_write_register(int fd, unsigned char reg_addr_or_cntrl, unsigned char val)
+{
+  unsigned char buff[2];
+  int ret = 0;
+  buff[0] = reg_addr_or_cntrl;
+  buff[1] = val;
+  ret = write(fd, buff, 2);
+  if((ret == -1) || (ret != 2)){
+    return -1;
+  } else {
+    return(ret);
+  }
 }
 
 
