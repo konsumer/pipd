@@ -1,5 +1,3 @@
-#pragma once
-
 /*
  * MIT License
 
@@ -25,6 +23,7 @@ SOFTWARE.
 
 */
 
+#pragma once
 #include <stdint.h>
 
 #include <fcntl.h>
