@@ -1,7 +1,0 @@
-#N canvas 827 239 527 327 12;
-#X obj 346 133 inlet;
-#X obj 79 64 loadbang;
-#X obj 79 122 print WARNING;
-#X msg 79 93 pi2c_oled is emulated. Please compile the real external.;
-#X connect 1 0 3 0;
-#X connect 3 0 2 0;

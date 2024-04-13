@@ -38,7 +38,7 @@ void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h,
 }
 
 void pi2c_4encoder_rotary(t_pi2c_4encoder *x, t_floatarg n, t_floatarg val) {
-  if (id < 0 || id > 3) {
+  if (n < 0 || n > 3) {
     post("Invalid encoder ID. Must be between 0 and 3.");
     return;
   }
@@ -48,8 +48,6 @@ void pi2c_4encoder_rotary(t_pi2c_4encoder *x, t_floatarg n, t_floatarg val) {
 void *pi2c_4encoder_new() {
   t_pi2c_4encoder *x = (t_pi2c_4encoder *)pd_new(pi2c_4encoder_class);
   x->fd = i2c_open(1);
-  // with underlying lib we have to set all pixels at once, so I track
-  // it in the instance object
   return (void *)x;
 }
 
