@@ -3,7 +3,7 @@
 
 static t_class *pi2c_oled_class;
 
-// TODO: replace all the GIMMEs with proper param-lists (except text, whcih has
+// TODO: replace all the GIMMEs with proper param-lists (except text, which has
 // dynamic length)
 
 typedef struct _pi2c_oled {
