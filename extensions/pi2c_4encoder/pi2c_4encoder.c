@@ -42,11 +42,11 @@ void pi2c_4encoder_rotary(t_pi2c_4encoder *x, t_floatarg id, t_floatarg val) {
   encoder4_rotary_set(x->fd, (uint8_t)id, (int32_t)val);
 }
 
-void *pi2c_4encoder_new(t_floatarg fd) {
+void *pi2c_4encoder_new() {
   t_pi2c_4encoder *x = (t_pi2c_4encoder *)pd_new(pi2c_4encoder_class);
-  x->fd = (int)fd;
-  // with underlying lib we have to set all pixels at once, so I track it in the
-  // instance object
+  x->fd = i2c_open(1);
+  // with underlying lib we have to set all pixels at once, so I track
+  // it in the instance object
   x->colors = {0};
   return (void *)x;
 }

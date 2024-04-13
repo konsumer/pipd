@@ -5,11 +5,9 @@ static t_class *pi2c_8encoder_class;
 
 typedef struct _pi2c_8encoder {
   t_object x_obj;
-  int fd; // File descriptor for I2C communication
-          // You might add more internal states as needed
+  int fd;
 } t_pi2c_8encoder;
 
-// Function prototypes
 void pi2c_8encoder_free(t_pi2c_8encoder *x);
 void *pi2c_8encoder_new(t_floatarg f);
 
@@ -33,7 +31,8 @@ void pi2c_8encoder_color_rgb(t_pi2c_8encoder *x, t_floatarg index, t_floatarg r,
   encoder8_color_rgb(x->fd, (uint8_t)index, color);
 }
 
-void pi2c_8encoder_rotary_get(t_pi2c_8encoder *x, t_floatarg index) {
+void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg index,
+                              t_floatarg val) {
   if (index < 0 || index > 7) {
     post("Invalid encoder ID. Must be between 0 and 7.");
     return;
@@ -49,20 +48,25 @@ void pi2c_8encoder_setup(void) {
                 CLASS_DEFAULT, A_DEFFLOAT, 0);
 
   class_addmethod(pi2c_8encoder_class, (t_method)pi2c_8encoder_color_hsv,
-                  gensym("color_hsv"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+                  gensym("hsv"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
   class_addmethod(pi2c_8encoder_class, (t_method)pi2c_8encoder_color_rgb,
-                  gensym("color_rgb"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-  class_addmethod(pi2c_8encoder_class, (t_method)pi2c_8encoder_rotary_get,
-                  gensym("rotary_get"), A_FLOAT, 0);
+                  gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+  class_addmethod(pi2c_8encoder_class, (t_method)pi2c_8encoder_rotary_set,
+                  gensym("rotary"), A_FLOAT, A_FLOAT, 0);
 }
 
-void *pi2c_8encoder_new(t_floatarg f) {
+void *pi2c_8encoder_new() {
   t_pi2c_8encoder *x = (t_pi2c_8encoder *)pd_new(pi2c_8encoder_class);
-  x->fd = f; // Assume the file descriptor or I2C bus is passed as an argument
-  // Initialize I2C or open file descriptor here if necessary
+  x->fd = i2c_open(1) return (void *)x;
+  if (x->fd < 0) {
+    post("Could not open i2c bus.");
+    return NULL;
+  }
+  if (i2c_set_addr(fd, ENCODER8_ADDR) < 0) {
+    post("Could not open the encoder.");
+    return NULL;
+  }
   return (void *)x;
 }
 
-void pi2c_8encoder_free(t_pi2c_8encoder *x) {
-  // Close file descriptor or clean up resources here if necessary
-}
+void pi2c_8encoder_free(t_pi2c_8encoder *x) { i2c_close(fd); }
