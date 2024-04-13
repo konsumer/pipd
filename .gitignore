@@ -8,3 +8,4 @@ drivers/test_oled
 *.swp
 *.o
 *.pd_linux
+._*
