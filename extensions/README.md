@@ -57,8 +57,9 @@ pi2c_oled
     clear - clear the display
     scroll TYPE - do something with hardware-scrolling, TYPE is RIGHT/LEFT/DIAGRIGHT/DIAGLEFT/STOP
     rotate DEG - rotate screen. DEG is 0-359
-    bitmap X Y NAME - display a 1bit bitmap file (not done yet)
     invert X - invert colors - X is 0/1
+    loadimage NAME FILENAME - load & convert an image
+    image X Y NAME - display a 1bit bitmap file (not done yet)
     bang - render the current screen (call this on every change)
 ```
 

@@ -291,6 +291,14 @@ void testdrawbitmap_eg(int fd) {
   testdrawbitmap(fd, logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
 }
 
+// load a bitmap from disk
+void testLoadBitmap(int fd) {
+  int width = 0;
+  int height = 0;
+  unsigned char *cat = loadBitmap("cat.png", &width, &height);
+  drawBitmap(0, 0, cat, width, height, BLACK);
+}
+
 int main(int argc, char *argv[]) {
   int fd = i2c_open(1);
 
@@ -394,6 +402,11 @@ int main(int argc, char *argv[]) {
   testdrawbitmap_eg(fd);
   clearDisplay(fd);
   usleep(1000000);
+  Display(fd);
+
+  usleep(1000000);
+  clearDisplay(fd);
+  testLoadBitmap(fd);
   Display(fd);
 
   return 0;
