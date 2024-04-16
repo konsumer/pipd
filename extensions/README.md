@@ -6,62 +6,11 @@ This is 3 externals for puredata, for use with i2c devices & pi:
 
 You can download from [here](LINK_NEEDED) and put in your puredata-path on a pi.
 
-## messages
+You can read mroe about each:
 
-```
-pi2c_4encoder
-  params
-
-    address - int, default:73 (0x49)
-
-  inlet 1 messages
-
-    bang - update values
-    hsv ID H S V - set the color - ID is 0-3, H/S/V are float 0-1
-    rgb ID R G B - set the color - ID is 0-3, R/G/B are int 0-255
-    rotary ID VAL - set the rotary value - ID is 0-3, VAL is int -2147483648 - 2147483647
-
-  outlet 1 messages
-
-    rotary ID VAL - on change, ID is 0-3, VAL is int -2147483648 - 2147483647
-    button ID VAL - on change, ID is 0-3, VAL is int 0/1
-
-
-pi2c_8encoder
-  params
-
-    address - int, default:65 (0x41)
-
-  inlet 1 messages
-
-    bang - update values
-    hsv ID H S V - set the color - ID is 0-7, H/S/V are float 0-1
-    rgb ID R G B - set the color - ID is 0-7, R/G/B are int 0-255
-    rotary ID VAL - set the rotary value - ID is 0-7, VAL is int -2147483648 - 2147483647
-
-  outlet 1 messages
-
-    rotary ID VAL - on change, ID is 0-7, VAL is int -2147483648 - 2147483647
-    button ID VAL - on change, ID is 0-7, VAL is int 0/1
-
-
-pi2c_oled
-  inlet 1 messages
-    text COLOR X Y ...TEXT - COLOR is 0/1
-    textsize X - set text-size to X
-    rectangle COLOR X Y W H - COLOR is 0/1
-    circle COLOR X Y R - draw a cirlce, COLOR is 0/1
-    triangle COLOR X0 Y0 X1 Y1 X2 Y2 - draw a triangle with 3 points, COLOR is 0/1
-    line COLOR X0 Y0 X1 Y1 - draw a line between 2 points, COLOR is 0/1
-    graph COLOR X Y W H ...NUMBERS - creates a scaled graph of NUMBERS that fits in the rect, COLOR is 0/1
-    clear - clear the display
-    scroll TYPE - do something with hardware-scrolling, TYPE is RIGHT/LEFT/DIAGRIGHT/DIAGLEFT/STOP
-    rotate DEG - rotate screen. DEG is 0-359
-    invert X - invert colors - X is 0/1
-    loadimage NAME FILENAME - load & convert an image
-    image X Y NAME - display a 1bit bitmap file (not done yet)
-    bang - render the current screen (call this on every change)
-```
+- [pi2c_4encoder](pi2c_4encoder)
+- [pi2c_8encoder](pi2c_8encoder)
+- [pi2c_oled](pi2c_oled)
 
 ## setup
 
