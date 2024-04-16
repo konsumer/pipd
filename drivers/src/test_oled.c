@@ -330,7 +330,7 @@ void testLoadBitmap(int fd) {
   int height = 0;
   unsigned char *cat = loadBitmap("cat.bmp", &width, &height);
   // printBitmap(cat, width, height);
-  drawBitmap(0, 0, cat, width, height, 1);
+  drawBitmap(0, 0, cat, width, height, 0);
   stbi_image_free(cat);
 }
 
