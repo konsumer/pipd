@@ -36,8 +36,6 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 /* Enable or Disable DEBUG Prints */
 // #define SSD1306_DBG
@@ -196,7 +194,8 @@ extern void fillRoundRect(short x, short y, short w, short h, short r,
                           short color);
 extern void drawBitmap(short x, short y, const unsigned char bitmap[], short w,
                        short h, short color);
-extern unsigned char *loadBitmap((const char *filename, int *outWidth, int *outHeight);
+extern unsigned char *loadBitmap(const char *filename, int *outWidth,
+                                 int *outHeight);
 extern short oled_write(unsigned char c);
 
 /*SSD1306 Text and Character Handling API's */

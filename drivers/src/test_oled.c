@@ -1,4 +1,5 @@
 #include "oled.h"
+#include "stb_image.h"
 #include <signal.h>
 
 #define LOGO16_GLCD_HEIGHT 16
@@ -23,6 +24,38 @@ static const unsigned char logo16_glcd_bmp[] = {
     0b00001101, 0b01110000, 0b00011011, 0b10100000, 0b00111111, 0b11100000,
     0b00111111, 0b11110000, 0b01111100, 0b11110000, 0b01110000, 0b01110000,
     0b00000000, 0b00110000};
+
+// this will display a bitmap on console
+void printBitmap(unsigned char *bmp, short w, short h) {
+  printf("%dx%d:\n", w, h);
+
+  short y = 0;
+  short x = 0;
+
+  short byteWidth = 0, j = 0, i = 0;
+  unsigned char byte = 0;
+  byteWidth = (w + 7) / 8; // Bitmap scanline pad = whole byte
+
+  for (j = 0; j < h; j++, y++) {
+    for (i = 0; i < w; i++) {
+      if (i & 7)
+        byte <<= 1;
+      else
+        byte = bmp[j * byteWidth + i / 8];
+
+      if (i == 0) {
+        printf("\n");
+      }
+
+      if (byte & 0x80) {
+        printf("X");
+      } else {
+        printf(" ");
+      }
+    }
+  }
+  printf("\n");
+}
 
 void testdrawline(int fd) {
   short i = 0;
@@ -295,8 +328,10 @@ void testdrawbitmap_eg(int fd) {
 void testLoadBitmap(int fd) {
   int width = 0;
   int height = 0;
-  unsigned char *cat = loadBitmap("cat.png", &width, &height);
-  drawBitmap(0, 0, cat, width, height, BLACK);
+  unsigned char *cat = loadBitmap("cat.bmp", &width, &height);
+  // printBitmap(cat, width, height);
+  drawBitmap(0, 0, cat, width, height, 1);
+  stbi_image_free(cat);
 }
 
 int main(int argc, char *argv[]) {
@@ -384,11 +419,6 @@ int main(int argc, char *argv[]) {
   usleep(1000000);
   clearDisplay(fd);
 
-  // Display miniature bitmap
-  display_bitmap(fd);
-  Display(fd);
-  usleep(1000000);
-
   // Display Inverted image and normalize it back
   display_invert_normal(fd);
   clearDisplay(fd);
@@ -398,16 +428,22 @@ int main(int argc, char *argv[]) {
   // Generate Signal after 20 Seconds
   alarm(20);
 
+  // Display miniature bitmap
+  display_bitmap(fd);
+  Display(fd);
+  usleep(1000000);
+
   // draw a bitmap icon and 'animate' movement
   testdrawbitmap_eg(fd);
   clearDisplay(fd);
   usleep(1000000);
   Display(fd);
-
   usleep(1000000);
+
   clearDisplay(fd);
   testLoadBitmap(fd);
   Display(fd);
+  usleep(1000000);
 
   return 0;
 }

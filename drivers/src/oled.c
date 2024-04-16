@@ -29,6 +29,9 @@ SOFTWARE.
 
 #include "oled.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 /* MACROS */
 #define SWAP(x, y)                                                             \
   {                                                                            \
@@ -1751,14 +1754,35 @@ void drawBitmap(short x, short y, const unsigned char bitmap[], short w,
  ****************************************************************/
 unsigned char *loadBitmap(const char *filename, int *outWidth, int *outHeight) {
   int width, height, channels;
-  unsigned char *imgData = stbi_load(filename, &width, &height, &channels, 1);
+  unsigned char *imgData = stbi_load(filename, &width, &height, &channels, 0);
   if (!imgData) {
     fprintf(stderr, "Error in loading image: %s\n", stbi_failure_reason());
     return NULL;
   }
+
+  // Convert the image to grayscale
+  unsigned char *grayscale = malloc(width * height);
+  for (int i = 0; i < width * height; i++) {
+    grayscale[i] =
+        (imgData[i * 3] + imgData[i * 3 + 1] + imgData[i * 3 + 2]) / 3;
+  }
+
+  // Convert the grayscale image to a 1-bit bitmap
+  unsigned char *bitmap = malloc(width * height / 8);
+  for (int i = 0; i < width * height / 8; i++) {
+    bitmap[i] = 0;
+    for (int j = 0; j < 8; j++) {
+      bitmap[i] |= (grayscale[i * 8 + j] < 128) << (7 - j);
+    }
+  }
+
+  free(imgData);
+  free(grayscale);
+
+  // printf("%s loaded: %dx%d - %d\n", filename, width, height, channels);
   *outWidth = width;
   *outHeight = height;
-  return imgData;
+  return bitmap;
 }
 
 /*----------------------------------------------------------------------------

@@ -6,7 +6,7 @@ This is 3 externals for puredata, for use with i2c devices & pi:
 
 You can download from [here](LINK_NEEDED) and put in your puredata-path on a pi.
 
-You can read mroe about each:
+You can read more about each:
 
 - [pi2c_4encoder](pi2c_4encoder)
 - [pi2c_8encoder](pi2c_8encoder)
