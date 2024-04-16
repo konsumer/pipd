@@ -30,4 +30,4 @@ In [another synth](https://github.com/konsumer/bellasynth) I used:
 
 ## ideas
 
-Another idea was to setup [classic midi](https://youtu.be/RbdNczYovHQ) this would allow midi devices while gadget-mode is enabled. I could save space by using [TRS plugs](https://midi.org/updated-how-to-make-your-own-3-5mm-mini-stereo-trs-to-midi-5-pin-din-cables) like modern midi equipment does...
+- [classic midi](https://youtu.be/RbdNczYovHQ) this would allow midi devices while gadget-mode is enabled. I could save space by using [TRS plugs](https://midi.org/updated-how-to-make-your-own-3-5mm-mini-stereo-trs-to-midi-5-pin-din-cables) like modern midi equipment does. see also [this](https://gist.github.com/CarloCattano/8c01a6dea6ecbb459acd0b6bcd752ea6)
