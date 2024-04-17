@@ -218,6 +218,16 @@ Then edit ExecStart above:
 ExecStart=/bin/sh -c '/usr/local/bin/bannerd -vD /path/to/frames/*.bmp'
 ```
 
+If you have full pi desktop setup you can use plymouth:
+
+```
+plymouth-set-default-theme --list
+sudo plymouth-set-default-theme spacefun
+sudo update-initramfs -u
+```
+
+You can add other themes to `/usr/share/plymouth/themes`
+
 ### remote graphical interface
 
 > [!WARNING]  
@@ -263,6 +273,8 @@ WantedBy=basic.target
 EOF
 ```
 
+
+Change `oneshot` to `simple` if your program does not exit on it's own.
 
 ### todo
 
