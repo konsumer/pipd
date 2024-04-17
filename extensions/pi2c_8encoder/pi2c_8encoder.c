@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -89,23 +90,24 @@ static void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
   int v = 0;
 
   if (!x->dorotaries) {
+    x->dorotaries = true;
     v = encoder8_switch_get(x->fd);
     if (v != x->sw) {
       x->sw = v;
       send_switch(x, v);
     }
+  } else {
+    x->dorotaries = false;
   }
 
   for (int i = 0; i < 8; i++) {
     if (x->dorotaries) {
-      x->dorotaries = false;
       v = encoder8_rotary_get(x->fd, i);
       if (v != x->rotaries[i]) {
         x->rotaries[i] = v;
         send_rotary(x, i, v);
       }
     } else {
-      x->dorotaries = true;
       v = encoder8_button_get(x->fd, i);
       if (v != x->buttons[i]) {
         x->buttons[i] = v;
@@ -114,7 +116,7 @@ static void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
     }
   }
 
-  // post("%d %d %d %d %d %d %d %d\n", rotaries[0], rotaries[1], rotaries[2], rotaries[3], rotaries[4], rotaries[5], rotaries[6], rotaries[7]);
+  // post("%d %d %d %d %d %d %d %d\n", x->rotaries[0], x->rotaries[1], x->rotaries[2], x->rotaries[3], x->rotaries[4], x->rotaries[5], x->rotaries[6], x->rotaries[7]);
 }
 
 static void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b) {
