@@ -83,6 +83,7 @@ void pi2c_4encoder_rgb(t_pi2c_4encoder *x, t_floatarg n, t_floatarg r, t_floatar
   }
   if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
     post("Invalid RGB. Must be between 0 and 255.");
+    return;
   }
 
   post("RGB (%d): %d, %d, %d", (int)n, (int)r, (int)g, (int)b);
