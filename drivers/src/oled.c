@@ -1638,7 +1638,7 @@ unsigned char *loadBitmap(const char *filename, int *outWidth, int *outHeight) {
     return NULL;
   }
 
-  // Convert the image to grayscale
+  // Convert the image to grayscale (and invert colors)
   unsigned char *grayscale = malloc(width * height);
   for (int i = 0; i < width * height; i++) {
     grayscale[i] = ((imgData[i * 3] + imgData[i * 3 + 1] + imgData[i * 3 + 2]) / 3) ? 0 : 255;

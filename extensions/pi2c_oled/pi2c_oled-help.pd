@@ -1,8 +1,8 @@
 #N canvas 827 239 527 327 12;
 #X obj 259 394 pi2c_oled;
 #X obj 209 84 loadbang;
-#X obj 129 154 delay 2000;
-#N canvas 0 22 450 300 bongocat 1;
+#X obj 144 228 delay 2000;
+#N canvas 0 22 450 300 bongocat 0;
 #X obj 239 339 outlet oled;
 #X obj 232 24 inlet bang;
 #X msg 414 184 clear;
@@ -39,7 +39,7 @@
 #X connect 11 3 6 0;
 #X connect 12 0 10 0;
 #X connect 13 0 11 0;
-#X restore 129 185 pd bongocat;
+#X restore 144 259 pd bongocat;
 #N canvas 0 22 450 300 sayhi 0;
 #X msg 297 304 textsize 1;
 #X msg 308 278 text 1 0 0 Hello!;
@@ -61,7 +61,7 @@
 #X connect 5 4 2 0;
 #X connect 5 5 4 0;
 #X connect 6 0 5 0;
-#X restore 279 185 pd sayhi;
+#X restore 279 174 pd sayhi;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
