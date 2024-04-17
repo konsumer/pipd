@@ -10,7 +10,7 @@ typedef struct _pi2c_4encoder {
   t_object x_obj;
   t_outlet *output_outlet;  // Single outlet for both rotary and button messages
   int fd;                   // Identification for the encoder hardware
-  ColorRGB colors[4];       // Represents the current RGB LED colors
+  ColorRGB colors[4];       // Represents the current RGB LED colors (needed because 4encoder only lets you set them all)
   int rotaries[4];          // Current state of rotaries
   uint8_t buttons[4];       // Curent state of buttons
 } t_pi2c_4encoder;
@@ -100,6 +100,7 @@ void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h, t_floatar
   }
   if (h < 0.0 || h > 1.0 || s < 0.0 || s > 1.0 || v < 0.0 || v > 1.0) {
     post("Invalid HSV. Must be between 0 and 1.");
+    return;
   }
 
   post("HSV (%d): %f, %f, %f", (int)n, (float)h, (float)s, (float)v);
