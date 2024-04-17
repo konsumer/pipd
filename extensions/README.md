@@ -4,7 +4,7 @@ This is 3 externals for puredata, for use with i2c devices & pi:
 - [8 knob rotary-encoder thing](https://docs.m5stack.com/en/unit/8Encoder) it's also i2c and it has buttons and RGB LEDs,a nd has a toggle switch.
 - 128x64 SSD1306 monochrome OLED. These are surplus from really old phones, easy to find, and are pretty crisp & bright & cheap.
 
-You can download from [here](LINK_NEEDED) and put in your puredata-path on a pi.
+You can download from [here](https://github.com/konsumer/pipd/releases) and put in your puredata-path on a pi.
 
 You can read more about each:
 
