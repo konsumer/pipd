@@ -1,6 +1,3 @@
-> [!WARNING]  
-> I am still working on this.
-
 This is 3 C libs for use with i2c devices & pi:
 
 - [4 knob rotary-endoer thing](https://www.adafruit.com/product/5752) it's i2c (so no extra GPIO is used up) and it has buttons and RGB LEDs.
@@ -30,6 +27,9 @@ You will need these things to build:
 
 ```
 sudo apt install libi2c-dev build-essential
+
+# build 3 test programs
+make
 ```
 
 ## development
