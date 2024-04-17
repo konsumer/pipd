@@ -10,9 +10,9 @@ typedef struct _pi2c_8encoder {
   t_object x_obj;
   t_outlet *output_outlet;  // Single outlet for both rotary and button messages
   int fd;                   // Identification for the encoder hardware
-  int rotaries[4];          // Current state of rotaries
-  uint8_t buttons[4];       // Curent state of buttons
-  uint8_t sw;               // Current switch value
+  int rotaries[8];          // Current state of rotaries
+  int buttons[8];           // Curent state of buttons
+  int sw;                   // Current switch value
   bool dorotaries;          // I have to alternate buttons/rotaries because it's too many requests for a single pass
 } t_pi2c_8encoder;
 
@@ -43,10 +43,17 @@ static void *pi2c_8encoder_new(void) {
     post("Could not open the encoder.");
     return NULL;
   }
+
+  // init everything
+  x->sw = 0;
   ColorRGB black = {0};
   for (int i = 0; i < 8; i++) {
     encoder8_color_rgb(x->fd, i, black);
+    x->rotaries[i] = 0;
+    x->buttons[i] = 0;
   }
+  x->dorotaries = false;
+
   return (void *)x;
 }
 
@@ -79,31 +86,30 @@ static void send_switch(t_pi2c_8encoder *x, int v) {
 
 // BANG handler: read and output state changes
 static void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
-  int rotaries[8] = {0};
-  uint8_t buttons[8] = {0};
+  int v = 0;
 
   if (!x->dorotaries) {
-    uint8_t sw = encoder8_switch_get(x->fd);
-    if (sw != x->sw) {
-      x->sw = sw;
-      send_switch(x, sw);
+    v = encoder8_switch_get(x->fd);
+    if (v != x->sw) {
+      x->sw = v;
+      send_switch(x, v);
     }
   }
 
   for (int i = 0; i < 8; i++) {
     if (x->dorotaries) {
       x->dorotaries = false;
-      rotaries[i] = encoder8_rotary_get(x->fd, (uint8_t)i);
-      if (rotaries[i] != x->rotaries[i]) {
-        x->rotaries[i] = rotaries[i];
-        send_rotary(x, i, rotaries[i]);
+      v = encoder8_rotary_get(x->fd, i);
+      if (v != x->rotaries[i]) {
+        x->rotaries[i] = v;
+        send_rotary(x, i, v);
       }
     } else {
       x->dorotaries = true;
-      buttons[i] = encoder8_button_get(x->fd, (uint8_t)i);
-      if (buttons[i] != x->buttons[i]) {
-        x->buttons[i] = buttons[i];
-        send_button(x, i, buttons[i]);
+      v = encoder8_button_get(x->fd, i);
+      if (v != x->buttons[i]) {
+        x->buttons[i] = v;
+        send_button(x, i, v);
       }
     }
   }
