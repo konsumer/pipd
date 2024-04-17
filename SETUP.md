@@ -226,7 +226,7 @@ sudo plymouth-set-default-theme spacefun
 sudo update-initramfs -u
 ```
 
-You can add other themes to `/usr/share/plymouth/themes`
+The default is `pix`. You can add other themes to `/usr/share/plymouth/themes`, try copying one you like and customizing it.
 
 ### remote graphical interface
 
