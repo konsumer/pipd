@@ -37,11 +37,11 @@ static void *pi2c_8encoder_new(void) {
   x->output_outlet = outlet_new(&x->x_obj, &s_list);
   x->fd = i2c_open(1);
   if (x->fd < 0) {
-    post("Could not open i2c bus.");
+    post("pi2c_8encoder: Could not open i2c bus.");
     return NULL;
   }
   if (i2c_set_addr(x->fd, ENCODER8_ADDR) < 0) {
-    post("Could not open the encoder.");
+    post("pi2c_8encoder: Could not open the encoder.");
     return NULL;
   }
 
@@ -121,11 +121,11 @@ static void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
 
 static void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b) {
   if (n < 0 || n > 7) {
-    post("Invalid encoder ID. Must be between 0 and 7.");
+    post("pi2c_8encoder rgb: Invalid encoder ID. Must be between 0 and 7.");
     return;
   }
   if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-    post("Invalid RGB. Must be between 0 and 255.");
+    post("pi2c_8encoder rgb: Invalid RGB. Must be between 0 and 255.");
     return;
   }
 
@@ -137,11 +137,11 @@ static void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_
 
 static void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v) {
   if (n < 0 || n > 7) {
-    post("Invalid encoder ID. Must be between 0 and 7.");
+    post("pi2c_8encoder hsv: Invalid encoder ID. Must be between 0 and 7.");
     return;
   }
   if (h < 0.0 || h > 1.0 || s < 0.0 || s > 1.0 || v < 0.0 || v > 1.0) {
-    post("Invalid HSV. Must be between 0 and 1.");
+    post("pi2c_8encoder hsv: Invalid HSV. Must be between 0 and 1.");
     return;
   }
 
@@ -153,7 +153,7 @@ static void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_
 
 static void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg n, t_floatarg val) {
   if (n < 0 || n > 7) {
-    post("Invalid encoder ID. Must be between 0 and 7.");
+    post("pi2c_8encoder rotary: Invalid encoder ID. Must be between 0 and 7.");
     return;
   }
   encoder8_rotary_set(x->fd, (uint8_t)n, (int32_t)val);

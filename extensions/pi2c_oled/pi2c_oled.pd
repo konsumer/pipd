@@ -1,0 +1,3 @@
+#N canvas 827 239 527 327 12;
+#X obj 108 121 inlet;
+#X text 32 32 This is just a dummy used for testing on non-pi computer. At some point a full emualtor will be used.;

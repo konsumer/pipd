@@ -1641,7 +1641,7 @@ unsigned char *loadBitmap(const char *filename, int *outWidth, int *outHeight) {
   // Convert the image to grayscale
   unsigned char *grayscale = malloc(width * height);
   for (int i = 0; i < width * height; i++) {
-    grayscale[i] = (imgData[i * 3] + imgData[i * 3 + 1] + imgData[i * 3 + 2]) / 3;
+    grayscale[i] = ((imgData[i * 3] + imgData[i * 3 + 1] + imgData[i * 3 + 2]) / 3) ? 0 : 255;
   }
 
   // Convert the grayscale image to a 1-bit bitmap

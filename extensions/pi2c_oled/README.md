@@ -17,4 +17,4 @@ Puredata object, in native extension, for this [128x64 SSD1306 monochrome OLED](
 - `rotate DEG` - rotate screen. DEG is 0-359
 - `invert X` - invert colors - X is 0/1
 - `loadimage NAME FILENAME` - load & convert an image (prepare for drawing)
-- `image COLOR X Y NAME` - display a loaded image, COLOR is 0/1
+- `image X Y NAME` - display a loaded image
