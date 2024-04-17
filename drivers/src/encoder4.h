@@ -67,5 +67,3 @@ uint8_t encoder4_button_get(int fd, uint8_t index);
 
 // Get all button values at once
 void encoder4_buttons_get(int fd, uint8_t out[4]);
-
-

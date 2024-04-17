@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <stdlib.h>
+
 #include "encoder4.h"
 #include "m_pd.h"
 
@@ -5,29 +8,101 @@ static t_class *pi2c_4encoder_class;
 
 typedef struct _pi2c_4encoder {
   t_object x_obj;
-  int fd;
-  ColorRGB colors[4];
+  t_outlet *output_outlet;  // Single outlet for both rotary and button messages
+  int fd;                   // Identification for the encoder hardware
+  ColorRGB colors[4];       // Represents the current RGB LED colors
+  int rotaries[4];          // Current state of rotaries
+  uint8_t buttons[4];       // Curent state of buttons
 } t_pi2c_4encoder;
 
-void pi2c_4encoder_rgb(t_pi2c_4encoder *x, t_floatarg n, t_floatarg r,
-                       t_floatarg g, t_floatarg b) {
+void pi2c_4encoder_free(t_pi2c_4encoder *x);
+void *pi2c_4encoder_new(void);
+void pi2c_4encoder_bang(t_pi2c_4encoder *x);
+void pi2c_4encoder_rgb(t_pi2c_4encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b);
+void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v);
+void pi2c_4encoder_rotary_set(t_pi2c_4encoder *x, t_floatarg n, t_floatarg val);
+
+void pi2c_4encoder_setup(void) {
+  pi2c_4encoder_class = class_new(gensym("pi2c_4encoder"), (t_newmethod)pi2c_4encoder_new, (t_method)pi2c_4encoder_free, sizeof(t_pi2c_4encoder), CLASS_DEFAULT, 0);
+  class_addbang(pi2c_4encoder_class, pi2c_4encoder_bang);
+  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_rgb, gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_hsv, gensym("hsv"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_rotary_set, gensym("rotary"), A_FLOAT, A_FLOAT, 0);
+}
+
+void *pi2c_4encoder_new(void) {
+  t_pi2c_4encoder *x = (t_pi2c_4encoder *)pd_new(pi2c_4encoder_class);
+  x->output_outlet = outlet_new(&x->x_obj, &s_list);
+  x->fd = i2c_open(1);
+  if (x->fd < 0) {
+    post("Could not open i2c bus.");
+    return NULL;
+  }
+  if (i2c_set_addr(x->fd, ENCODER4_ADDR) < 0) {
+    post("Could not open the encoder.");
+    return NULL;
+  }
+  encoder4_setup(x->fd);
+  encoder4_colors_rgb(x->fd, x->colors);
+  return (void *)x;
+}
+
+void pi2c_4encoder_free(t_pi2c_4encoder *x) {
+  i2c_close(x->fd);
+}
+
+// BANG handler: read and output state changes
+void pi2c_4encoder_bang(t_pi2c_4encoder *x) {
+  int rotaries[4] = {0};
+  uint8_t buttons[4] = {0};
+  t_atom out[3];
+  encoder4_buttons_get(x->fd, buttons);
+  for (int i = 0; i < 4; i++) {
+    rotaries[i] = encoder4_rotary_get(x->fd, i);
+    if (rotaries[i] != x->rotaries[i]) {
+      x->rotaries[i] = rotaries[i];
+      SETSYMBOL(&out[0], gensym("rotary"));
+      SETFLOAT(&out[1], i);
+      SETFLOAT(&out[2], rotaries[i]);
+      outlet_list(x->output_outlet, &s_list, 3, out);
+    }
+    if (buttons[i] != x->buttons[i]) {
+      x->buttons[i] = buttons[i];
+      SETSYMBOL(&out[0], gensym("button"));
+      SETFLOAT(&out[1], i);
+      SETFLOAT(&out[2], buttons[i]);
+      outlet_list(x->output_outlet, &s_list, 3, out);
+    }
+  }
+}
+
+void pi2c_4encoder_rgb(t_pi2c_4encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b) {
   if (n < 0 || n > 3) {
     post("Invalid encoder ID. Must be between 0 and 3.");
     return;
   }
+  if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+    post("Invalid RGB. Must be between 0 and 255.");
+  }
+
+  post("RGB (%d): %d, %d, %d", (int)n, (int)r, (int)g, (int)b);
+
   x->colors[(int)n].r = (unsigned char)r;
   x->colors[(int)n].g = (unsigned char)g;
   x->colors[(int)n].b = (unsigned char)b;
-
   encoder4_colors_rgb(x->fd, x->colors);
 }
 
-void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h,
-                       t_floatarg s, t_floatarg v) {
+void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v) {
   if (n < 0 || n > 3) {
     post("Invalid encoder ID. Must be between 0 and 3.");
     return;
   }
+  if (h < 0.0 || h > 1.0 || s < 0.0 || s > 1.0 || v < 0.0 || v > 1.0) {
+    post("Invalid HSV. Must be between 0 and 1.");
+  }
+
+  post("HSV (%d): %f, %f, %f", (int)n, (float)h, (float)s, (float)v);
 
   ColorHSV hsv = {.h = (float)h, .s = (float)s, .v = (float)v};
   ColorRGB color = hsv_to_rgb(hsv);
@@ -37,29 +112,10 @@ void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h,
   encoder4_colors_rgb(x->fd, x->colors);
 }
 
-void pi2c_4encoder_rotary(t_pi2c_4encoder *x, t_floatarg n, t_floatarg val) {
+void pi2c_4encoder_rotary_set(t_pi2c_4encoder *x, t_floatarg n, t_floatarg val) {
   if (n < 0 || n > 3) {
     post("Invalid encoder ID. Must be between 0 and 3.");
     return;
   }
   encoder4_rotary_set(x->fd, (uint8_t)n, (int32_t)val);
-}
-
-void *pi2c_4encoder_new() {
-  t_pi2c_4encoder *x = (t_pi2c_4encoder *)pd_new(pi2c_4encoder_class);
-  x->fd = i2c_open(1);
-  return (void *)x;
-}
-
-void pi2c_4encoder_setup(void) {
-  pi2c_4encoder_class =
-      class_new(gensym("pi2c_4encoder"), (t_newmethod)pi2c_4encoder_new, 0,
-                sizeof(t_pi2c_4encoder), CLASS_DEFAULT, 0);
-
-  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_rgb,
-                  gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_hsv,
-                  gensym("hsv"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-  class_addmethod(pi2c_4encoder_class, (t_method)pi2c_4encoder_rotary,
-                  gensym("rotary"), A_FLOAT, A_FLOAT, 0);
 }
