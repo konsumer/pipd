@@ -18,8 +18,6 @@ Make sure to add this to your `/boot/firmware/config.txt`:
 dtparam=i2c_arm=on,i2c_arm_baudrate=1000000
 ```
 
-The OLED/i2c code came from [here](https://github.com/giuliomoro/OSC2OLED4Bela)
-
 ## building
 
 
@@ -36,7 +34,7 @@ make
 
 Here is some reference that helped me make this:
 
-- [this beaglebone SSD1306 driver](https://github.com/deeplyembeddedWP/SSD1306-OLED-display-driver-for-BeagleBone)
+- [this beaglebone SSD1306 driver](https://github.com/deeplyembeddedWP/SSD1306-OLED-display-driver-for-BeagleBone). I added a compule things, liek images, but the main code came from here
 - [specs for 8encoder](https://docs.m5stack.com/en/unit/8Encoder)
 - [specs for seesaw](https://learn.adafruit.com/adafruit-seesaw-atsamd09-breakout/using-the-seesaw-platform) helped with 4encoder
 - [this python file](../demo.py) - I try to use all circuitpython/blinka in python, so it can really help to see what messages were sent and what comes back
