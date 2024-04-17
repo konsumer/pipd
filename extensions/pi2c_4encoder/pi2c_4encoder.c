@@ -51,27 +51,36 @@ void pi2c_4encoder_free(t_pi2c_4encoder *x) {
   i2c_close(x->fd);
 }
 
+void send_rotary(t_pi2c_4encoder *x, int i, int v) {
+  t_atom out[3];
+  SETSYMBOL(&out[0], gensym("rotary"));
+  SETFLOAT(&out[1], i);
+  SETFLOAT(&out[2], v);
+  outlet_list(x->output_outlet, &s_list, 3, out);
+}
+
+void send_button(t_pi2c_4encoder *x, int i, int v) {
+  t_atom out[3];
+  SETSYMBOL(&out[0], gensym("button"));
+  SETFLOAT(&out[1], i);
+  SETFLOAT(&out[2], v);
+  outlet_list(x->output_outlet, &s_list, 3, out);
+}
+
 // BANG handler: read and output state changes
 void pi2c_4encoder_bang(t_pi2c_4encoder *x) {
   int rotaries[4] = {0};
   uint8_t buttons[4] = {0};
-  t_atom out[3];
   encoder4_buttons_get(x->fd, buttons);
   for (int i = 0; i < 4; i++) {
     rotaries[i] = encoder4_rotary_get(x->fd, i);
     if (rotaries[i] != x->rotaries[i]) {
       x->rotaries[i] = rotaries[i];
-      SETSYMBOL(&out[0], gensym("rotary"));
-      SETFLOAT(&out[1], i);
-      SETFLOAT(&out[2], rotaries[i]);
-      outlet_list(x->output_outlet, &s_list, 3, out);
+      send_rotary(x, i, rotaries[i]);
     }
     if (buttons[i] != x->buttons[i]) {
       x->buttons[i] = buttons[i];
-      SETSYMBOL(&out[0], gensym("button"));
-      SETFLOAT(&out[1], i);
-      SETFLOAT(&out[2], buttons[i]);
-      outlet_list(x->output_outlet, &s_list, 3, out);
+      send_button(x, i, buttons[i]);
     }
   }
 }
@@ -86,7 +95,7 @@ void pi2c_4encoder_rgb(t_pi2c_4encoder *x, t_floatarg n, t_floatarg r, t_floatar
     return;
   }
 
-  post("RGB (%d): %d, %d, %d", (int)n, (int)r, (int)g, (int)b);
+  // post("RGB (%d): %d, %d, %d", (int)n, (int)r, (int)g, (int)b);
 
   x->colors[(int)n].r = (unsigned char)r;
   x->colors[(int)n].g = (unsigned char)g;
@@ -104,7 +113,7 @@ void pi2c_4encoder_hsv(t_pi2c_4encoder *x, t_floatarg n, t_floatarg h, t_floatar
     return;
   }
 
-  post("HSV (%d): %f, %f, %f", (int)n, (float)h, (float)s, (float)v);
+  // post("HSV (%d): %f, %f, %f", (int)n, (float)h, (float)s, (float)v);
 
   ColorHSV hsv = {.h = (float)h, .s = (float)s, .v = (float)v};
   ColorRGB color = hsv_to_rgb(hsv);
