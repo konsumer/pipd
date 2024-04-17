@@ -16,12 +16,12 @@ typedef struct _pi2c_8encoder {
   bool dorotaries;          // I have to alternate buttons/rotaries because it's too many requests for a single pass
 } t_pi2c_8encoder;
 
-void pi2c_8encoder_free(t_pi2c_8encoder *x);
-void *pi2c_8encoder_new(void);
-void pi2c_8encoder_bang(t_pi2c_8encoder *x);
-void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b);
-void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v);
-void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg n, t_floatarg val);
+static void pi2c_8encoder_free(t_pi2c_8encoder *x);
+static void *pi2c_8encoder_new(void);
+static void pi2c_8encoder_bang(t_pi2c_8encoder *x);
+static void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b);
+static void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v);
+static void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg n, t_floatarg val);
 
 void pi2c_8encoder_setup(void) {
   pi2c_8encoder_class = class_new(gensym("pi2c_8encoder"), (t_newmethod)pi2c_8encoder_new, (t_method)pi2c_8encoder_free, sizeof(t_pi2c_8encoder), CLASS_DEFAULT, 0);
@@ -31,7 +31,7 @@ void pi2c_8encoder_setup(void) {
   class_addmethod(pi2c_8encoder_class, (t_method)pi2c_8encoder_rotary_set, gensym("rotary"), A_FLOAT, A_FLOAT, 0);
 }
 
-void *pi2c_8encoder_new(void) {
+static void *pi2c_8encoder_new(void) {
   t_pi2c_8encoder *x = (t_pi2c_8encoder *)pd_new(pi2c_8encoder_class);
   x->output_outlet = outlet_new(&x->x_obj, &s_list);
   x->fd = i2c_open(1);
@@ -50,11 +50,11 @@ void *pi2c_8encoder_new(void) {
   return (void *)x;
 }
 
-void pi2c_8encoder_free(t_pi2c_8encoder *x) {
+static void pi2c_8encoder_free(t_pi2c_8encoder *x) {
   i2c_close(x->fd);
 }
 
-void send_rotary(t_pi2c_8encoder *x, int i, int v) {
+static void send_rotary(t_pi2c_8encoder *x, int i, int v) {
   t_atom out[3];
   SETSYMBOL(&out[0], gensym("rotary"));
   SETFLOAT(&out[1], i);
@@ -62,7 +62,7 @@ void send_rotary(t_pi2c_8encoder *x, int i, int v) {
   outlet_list(x->output_outlet, &s_list, 3, out);
 }
 
-void send_button(t_pi2c_8encoder *x, int i, int v) {
+static void send_button(t_pi2c_8encoder *x, int i, int v) {
   t_atom out[3];
   SETSYMBOL(&out[0], gensym("button"));
   SETFLOAT(&out[1], i);
@@ -70,7 +70,7 @@ void send_button(t_pi2c_8encoder *x, int i, int v) {
   outlet_list(x->output_outlet, &s_list, 3, out);
 }
 
-void send_switch(t_pi2c_8encoder *x, int v) {
+static void send_switch(t_pi2c_8encoder *x, int v) {
   t_atom out[2];
   SETSYMBOL(&out[0], gensym("switch"));
   SETFLOAT(&out[1], v);
@@ -78,7 +78,7 @@ void send_switch(t_pi2c_8encoder *x, int v) {
 }
 
 // BANG handler: read and output state changes
-void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
+static void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
   int rotaries[8] = {0};
   uint8_t buttons[8] = {0};
 
@@ -111,7 +111,7 @@ void pi2c_8encoder_bang(t_pi2c_8encoder *x) {
   // post("%d %d %d %d %d %d %d %d\n", rotaries[0], rotaries[1], rotaries[2], rotaries[3], rotaries[4], rotaries[5], rotaries[6], rotaries[7]);
 }
 
-void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b) {
+static void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatarg g, t_floatarg b) {
   if (n < 0 || n > 7) {
     post("Invalid encoder ID. Must be between 0 and 7.");
     return;
@@ -127,7 +127,7 @@ void pi2c_8encoder_rgb(t_pi2c_8encoder *x, t_floatarg n, t_floatarg r, t_floatar
   encoder8_color_rgb(x->fd, (uint8_t)n, color);
 }
 
-void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v) {
+static void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatarg s, t_floatarg v) {
   if (n < 0 || n > 7) {
     post("Invalid encoder ID. Must be between 0 and 7.");
     return;
@@ -143,7 +143,7 @@ void pi2c_8encoder_hsv(t_pi2c_8encoder *x, t_floatarg n, t_floatarg h, t_floatar
   encoder8_color_hsv(x->fd, (uint8_t)n, color);
 }
 
-void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg n, t_floatarg val) {
+static void pi2c_8encoder_rotary_set(t_pi2c_8encoder *x, t_floatarg n, t_floatarg val) {
   if (n < 0 || n > 7) {
     post("Invalid encoder ID. Must be between 0 and 7.");
     return;
