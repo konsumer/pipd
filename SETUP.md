@@ -242,6 +242,27 @@ sudo raspi-config
 
 Windows has RDP built-in, and you can download a nice client (from MS) for mac, and linux has a few clients.
 
+## general tricks
+
+If you want something non-graphical to happen early in boot, and use regular systemd, do this:
+
+```
+cat << EOF | sudo tee  /etc/systemd/system/whatever.service
+[Unit]
+Description=My Thing
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/path/to/script
+
+[Install]
+WantedBy=basic.target
+EOF
+```
+
 
 ### todo
 
