@@ -2,7 +2,9 @@
 
 I wanted to use mostly "regular" stuff to get a pi booting fast headless and running puredata patches. My goal was to run it in ethernet gadget-mode for very fast way to interact on the computer, but also not wait for things like wifi to work (although you can still enable these, if you want.)
 
-This will work with pizero(2w) and pi4.
+This expands on some ideas in [pdpi](https://github.com/konsumer/pdpi), and I will be combining these, and calling it all "pipd", going forward.
+
+This will work with pizero(2w) and pi4, which is only needed for "gadget mode" on USB. The C lib/puredata-patches will work on any pi.
 
 It should load a few systemd services in the background to make it all run smoothly, and as "normal" as possible.
 
