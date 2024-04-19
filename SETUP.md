@@ -81,6 +81,11 @@ EOF
 
 Feel free to modify `/etc/systemd/system/pipd.service` to support your hardware, libs, or whatever patches you want. I also like to point it at a script for eassier editing.
 
+
+For a very modern feeling version of puredata, with lots of stuff built in, that has "compiled mode" for building optimized code for running patches, check out [plugdata](https://software.opensuse.org//download.html?project=home%3Aplugdata&package=plugdata). The "Raspbian" version ran really well, in my testing.
+
+### i2c
+
 Here is some stuff for i2c:
 
 ```
